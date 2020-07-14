@@ -1,11 +1,8 @@
 import React from 'react'
+import fire from './fire'
 
-function App() {
-  return (
-    <div>
-      <h1>Listic</h1>
-    </div>
-  )
+const App = () => {
+	return <h1>Listic</h1>
 }
 
 export default App
