@@ -1,6 +1,6 @@
 import firebase from 'firebase'
 
-const config = {
+export const config = {
   apiKey: "AIzaSyDin-xOT8bMoecdkDCIbWvlg43UtfASgzA",
   authDomain: "listic-17cbd.firebaseapp.com",
   databaseURL: "https://listic-17cbd.firebaseio.com",
@@ -11,7 +11,7 @@ const config = {
   measurementId: "G-CZP1EDG0LF"
 }
 // Initialize Firebase
-const fire = firebase.initializeApp(config)
-firebase.analytics()
+// const fire = firebase.initializeApp(config)
+// firebase.analytics()
 
-export default fire
+// export default fire
