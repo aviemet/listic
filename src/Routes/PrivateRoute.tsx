@@ -1,11 +1,12 @@
 import React from 'react'
 import { Redirect, Route } from 'react-router-dom'
 
-const loggedIn = false
+interface PrivateRouteProps {
+	isAuthorized: boolean
+}
 
-const PrivateRoute = ({ children, ...rest }) => {
-	console.log('Private')
-	if(!loggedIn) {
+const PrivateRoute = ({ isAuthorized, children, ...rest }) => {
+	if(!isAuthorized) {
 		return <Redirect to={ {
 			pathname: '/login',
 			state: { 

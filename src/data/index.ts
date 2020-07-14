@@ -3,5 +3,6 @@ import { UserContextProvider, useUser } from './UserStoreContext'
 
 export {
 	UserStore,
-	UserContextProvider
+	UserContextProvider,
+	useUser
 }

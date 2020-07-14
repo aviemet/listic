@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
-import UserStore from './UserStore'
+import UserStore, { UserStoreType } from './UserStore'
 
-const UserStoreContext = React.createContext({})
+const UserStoreContext = React.createContext<Partial<UserStoreType>>({})
 
 export const useUser = () => useContext(UserStoreContext)
 

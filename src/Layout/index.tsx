@@ -1,13 +1,16 @@
 import React from 'react'
 import styled from 'styled-components'
 
-
-const Layout = () => {
+const Layout = ({ children }) => {
 	return (
-		<h1>Layout</h1>
+		<Container>
+			{ children }
+		</Container>
 	)
 }
 
-
+const Container = styled.div`
+	background: orange;
+`
 
 export default Layout
