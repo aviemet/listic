@@ -10,8 +10,9 @@ export const config = {
   appId: "1:906805463498:web:658f80e57fcefd6af0e733",
   measurementId: "G-CZP1EDG0LF"
 }
-// Initialize Firebase
-// const fire = firebase.initializeApp(config)
-// firebase.analytics()
 
-// export default fire
+// Initialize Firebase
+const fire = firebase.initializeApp(config)
+firebase.analytics()
+
+export default fire

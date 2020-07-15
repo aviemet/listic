@@ -14,6 +14,9 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { Link } from 'react-router-dom'
+import fire from 'lib/fire'
+import { has } from 'lodash'
+import { useForm } from 'react-hook-form'
 
 import Copyright from 'Components/Copyright'
 
@@ -38,6 +41,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignIn() {
+  const { register, errors, handleSubmit } = useForm()
+
+  const onSubmit = data => {
+    fire.auth().signInWithEmailAndPassword(data.email, data.password).catch(error => {
+      console.error({ error })
+    });
+  }
+
 	const classes = useStyles();
 
   return (
@@ -50,7 +61,7 @@ export default function SignIn() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} onSubmit={ handleSubmit(onSubmit) }>
           <TextField
             variant="outlined"
             margin="normal"
@@ -61,6 +72,11 @@ export default function SignIn() {
             name="email"
             autoComplete="email"
             autoFocus
+            error={ has(errors, 'email') }
+            helperText={ errors.email && errors.email.message }
+            inputRef={ register({
+              required: "Value Required"
+            }) }
           />
           <TextField
             variant="outlined"
@@ -72,6 +88,11 @@ export default function SignIn() {
             type="password"
             id="password"
             autoComplete="current-password"
+            error={ has(errors, 'password') }
+            helperText={ errors.password && errors.password.message }
+            inputRef={ register({
+              required: "Value Required"
+            }) }
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
