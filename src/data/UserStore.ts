@@ -1,7 +1,9 @@
-export interface UserStoreType {
-	isLoggedIn: boolean
-}
+import { observable } from 'mobx'
 
 export default class UserStore {
-	isLoggedIn = false
+	@observable isLoggedIn = false
+}
+
+export interface UserStoreType {
+	isLoggedIn: boolean
 }

@@ -70,41 +70,6 @@ export default function SignUp() {
 
           <Grid container spacing={2}>
 
-            <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="fname"
-                name="firstName"
-                variant="outlined"
-                required
-                fullWidth
-                id="firstName"
-                label="First Name"
-                autoFocus
-                error={ has(errors, 'firstName') }
-                helperText={ errors.firstName && errors.firstName.message }
-                inputRef={ register({
-                  required: "Value Required"
-                }) }
-              />
-            </Grid>
-
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
-                error={ has(errors, 'lastName') }
-                helperText={ errors.lastName && errors.lastName.message }
-                inputRef={ register({
-                  required: "Value Required"
-                }) }
-              />
-            </Grid>
-
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
@@ -158,13 +123,6 @@ export default function SignUp() {
                 inputRef={ register({
                   validate: value => value === watch('password') || "Passwords don't match"
                 }) }
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
               />
             </Grid>
 

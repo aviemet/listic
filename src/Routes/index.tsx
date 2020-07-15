@@ -1,20 +1,22 @@
 import React from 'react'
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
 import PrivateRoute from './PrivateRoute'
-import { useUser } from 'data'
+import ConditionalRedirectRoute from './ConditionalRedirectRoute'
 
+import { useUser } from 'data'
+import { observer } from 'mobx-react-lite'
 import ApplicationLayout from 'Layout'
 
 import LoginPage from 'App/Auth/Login'
 import RegisterPage from 'App/Auth/Register'
 
-const Routes = () => {	
+const Routes = observer(() => {	
 	const user = useUser()
 
 	return (
 		<Switch>
-			<Route exact path="/login" component={ LoginPage } />
-			<Route exact path="/register" component={ RegisterPage }/>
+			<ConditionalRedirectRoute exact path="/login" component={ LoginPage } condition={ user.isLoggedIn } redirect="/" />
+			<ConditionalRedirectRoute exact path="/register" component={ RegisterPage } condition={ user.isLoggedIn } redirect="/" />
 
 			<PrivateRoute path="/" isAuthorized={ user.isLoggedIn }>
 				<ApplicationLayout>
@@ -32,6 +34,6 @@ const Routes = () => {
 
 		</Switch>
 	)
-}
+})
 
 export default Routes
