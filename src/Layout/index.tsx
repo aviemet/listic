@@ -1,16 +1,3 @@
-import React from 'react'
-import styled from 'styled-components'
+import ApplicationLayout from './ApplicationLayout'
 
-const Layout = ({ children }) => {
-	return (
-		<Container>
-			{ children }
-		</Container>
-	)
-}
-
-const Container = styled.div`
-	background: orange;
-`
-
-export default Layout
+export { ApplicationLayout }
