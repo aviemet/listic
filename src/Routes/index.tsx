@@ -2,16 +2,19 @@ import React from 'react'
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
 import PrivateRoute from './PrivateRoute'
 import ConditionalRedirectRoute from './ConditionalRedirectRoute'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 import { useUser } from 'data'
 import { observer } from 'mobx-react-lite'
 import { ApplicationLayout } from 'Layout'
 
-import { Login, Register, Logout } from 'App/Auth'
-import fire from 'lib/fire'
+import LoadingPage from 'Components/LoadingPage'
+import { Login, Register, Logout, Dashboard, Groups, Lists, Reports, FourOhFour } from 'App/pages'
 
 const Routes = observer(() => {	
 	const user = useUser()
+
+	if(user.loading) return <LoadingPage />
 
 	return (
 		<Switch>
@@ -23,13 +26,12 @@ const Routes = observer(() => {
 					<Switch>
 						<Route exact path="/logout" component={ Logout } />
 
-						<Route exact path="/">
-							<h1>Hello</h1>
-						</Route>
+						<Route exact path={ ["/", "/dashboard"] } component={ Dashboard } />
+						<Route exact path="lists" component={ Lists } />
+						<Route exact path="groups" component={ Groups } />
+						<Route exact path="reports" component={ Reports } />
 
-						<Route exact path="/sup"><h1>Sup</h1></Route>
-
-						<Route path="*"><h1>404</h1></Route>
+						<Route path="*" component={ FourOhFour } />
 					</Switch>
 				</ApplicationLayout>
 			</PrivateRoute>
