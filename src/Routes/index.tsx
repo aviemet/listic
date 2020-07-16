@@ -12,7 +12,7 @@ import LoadingPage from 'Components/LoadingPage'
 import { Login, Register, Logout } from 'Pages/Auth'
 import { Dashboard } from 'Pages/Dashboard' 
 import { Groups } from 'Pages/Groups'
-import { Lists } from 'Pages/Lists'
+import { Lists, NewList } from 'Pages/Lists'
 import { Reports } from 'Pages/Reports' 
 import { FourOhFour } from 'Pages'
 
@@ -38,7 +38,7 @@ const Routes = observer(() => {
 						<Route exact path={ ["/", "/dashboard"] } component={ Dashboard } />
 
 						<Route exact path="/lists" component={ Lists } />
-						<Route exact path="/lists/new" component={ Lists } />
+						<Route exact path="/lists/new" component={ NewList } />
 
 						<Route exact path="/groups" component={ Groups } />
 

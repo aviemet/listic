@@ -1,3 +1,4 @@
 import Lists from './Lists'
+import NewList from './NewList'
 
-export { Lists }
+export { Lists, NewList }
