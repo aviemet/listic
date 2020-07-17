@@ -1,8 +1,4 @@
-import UserStore from './UserStore'
-import { UserContextProvider, useUser } from './UserStoreContext'
+import fire from 'lib/fire'
 
-export {
-	UserStore,
-	UserContextProvider,
-	useUser
-}
+export const auth = fire.auth()
+export const db = fire.database()

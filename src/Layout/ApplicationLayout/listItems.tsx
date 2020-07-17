@@ -21,12 +21,12 @@ export const mainListItems = (
 			</ListItem>
 		</Link>
 
-		<Link to="/lists">
+		<Link to="/events">
 			<ListItem button>
 				<ListItemIcon>
 					<FormatListBulletedIcon />
 				</ListItemIcon>
-				<ListItemText primary="Lists" />
+				<ListItemText primary="Events" />
 			</ListItem>
 		</Link>
 

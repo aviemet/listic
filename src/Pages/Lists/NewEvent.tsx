@@ -12,20 +12,18 @@ import Container from '@material-ui/core/Container'
 
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
-import fire from 'lib/fire'
+import { db } from 'data'
 
 import { has } from 'lodash'
 import { useForm } from 'react-hook-form'
 
 import { newListStyles } from './styles'
 
-const NewList = () => {
+const NewEvent = () => {
 	const { register, errors, handleSubmit } = useForm()
 
 	const onSubmit = data => {
-		fire.auth().signInWithEmailAndPassword(data.email, data.password).catch(error => {
-			console.error({ error })
-		});
+		
 	}
 	
 	const classes = newListStyles();
@@ -33,11 +31,11 @@ const NewList = () => {
 	return (
 		<Container component="main" maxWidth="lg">
 			
-			<div className={classes.paper}>
+			<div className={ classes.paper }>
 				<Typography component="h1" variant="h5">
 					Create New List
 				</Typography>
-				<form className={classes.form} onSubmit={ handleSubmit(onSubmit) }>
+				<form className={ classes.form } onSubmit={ handleSubmit(onSubmit) }>
 					<TextField
 						variant="outlined"
 						margin="normal"
@@ -69,15 +67,18 @@ const NewList = () => {
 						inputRef={ register({
 							required: "Value Required"
 						}) }
+						InputLabelProps={{
+							shrink: true,
+						}}
 					/>
 					<Button
 						type="submit"
 						fullWidth
 						variant="contained"
 						color="primary"
-						className={classes.submit}
+						className={ classes.submit }
 					>
-						Create New List
+						Create New Event
 					</Button>
 				</form>
 			</div>
@@ -85,4 +86,4 @@ const NewList = () => {
 	);
 }
 
-export default NewList
+export default NewEvent

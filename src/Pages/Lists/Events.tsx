@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-const Lists = () => {
+const Events = () => {
 	const classes = useStyles();
 	
 	return (
@@ -52,9 +52,9 @@ const Lists = () => {
 					className={classes.button}
 					startIcon={<AddIcon />}
 					component={ Link }
-					to="/lists/new"
+					to="/events/new"
 				>
-					New List
+					New Event
 				</Button>
 				</Grid>
 			</Grid>
@@ -65,12 +65,14 @@ const Lists = () => {
 						<TableRow>
 							<TableCell><TableSortLabel>Title</TableSortLabel></TableCell>
 							<TableCell><TableSortLabel>Date</TableSortLabel></TableCell>
+							<TableCell><TableSortLabel>Lists</TableSortLabel></TableCell>
 							<TableCell><TableSortLabel>Guests</TableSortLabel></TableCell>
 							<TableCell><TableSortLabel>Actions</TableSortLabel></TableCell>
 						</TableRow>
 					</TableHead>
 					<TableBody>
 						<TableRow>
+							<TableCell>Value</TableCell>
 							<TableCell>Value</TableCell>
 							<TableCell>Value</TableCell>
 							<TableCell>Value</TableCell>
@@ -84,4 +86,4 @@ const Lists = () => {
 	)
 }
 
-export default Lists
+export default Events
