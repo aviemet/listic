@@ -28,11 +28,18 @@ class Paths<T> {
 	}
 }
 
-class Links {
-	routes
+class Links<T> {
+	[dynamicProperty: string]: T
 
 	constructor(routes) {
-		this.routes = routes
+		Object.keys(routes).forEach(route => {
+			this[route] = new Proxy(routes[route], {
+				get(target, property) {
+					console.log(`Property ${String(property)} has been read.`)
+					return target[property]
+				}
+			})
+		})
 	}
 }
 

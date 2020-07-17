@@ -20,11 +20,10 @@ import { FourOhFour } from 'Pages'
 const Routes = observer(() => {	
 	const user = useUser()
 
-	const { paths } = useNamedRoutes(routes)
+	const { links, paths } = useNamedRoutes(routes)
 
 	React.useLayoutEffect(() => {
-		console.log({ paths })
-		console.log({ register: paths.register })
+		console.log({ links })
 	}, [])
 
 	if(user.loading) return <LoadingPage />
