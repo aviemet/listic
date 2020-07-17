@@ -6,6 +6,7 @@ import PrivateRoute from './PrivateRoute'
 import ConditionalRedirectRoute from './ConditionalRedirectRoute'
 
 import { useUser } from 'data/Users'
+import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { ApplicationLayout } from 'Layout'
 
@@ -20,33 +21,27 @@ import { FourOhFour } from 'Pages'
 const Routes = observer(() => {	
 	const user = useUser()
 
-	const { links, paths } = useNamedRoutes(routes)
-
-	React.useLayoutEffect(() => {
-		console.log({ links })
-	}, [])
-
 	if(user.loading) return <LoadingPage />
 
 	return (
 		<Switch>
 
-			<ConditionalRedirectRoute exact path={ paths.login } component={ Login } condition={ user.isLoggedIn } redirect="/" />
-			<ConditionalRedirectRoute exact path={ paths.register } component={ Register } condition={ user.isLoggedIn } redirect="/" />
+			<ConditionalRedirectRoute exact path="/login" component={ Login } condition={ user.isLoggedIn } redirect="/" />
+			<ConditionalRedirectRoute exact path="/register" component={ Register } condition={ user.isLoggedIn } redirect="/" />
 
 			<PrivateRoute path="/" isAuthorized={ user.isLoggedIn }>
 				<ApplicationLayout>
 					<Switch>
-						<Route exact path={ paths.logout } component={ Logout } />
+						<Route exact path="/logout" component={ Logout } />
 
-						<Route exact path={ paths.dashboard.index } component={ Dashboard } />
+						<Route exact path={ ["/", "/dashboard"] } component={ Dashboard } />
 
-						<Route exact path={ paths.events.index } component={ Events } />
-						<Route exact path={ paths.events.new } component={ NewEvent } />
+						<Route exact path="/events" component={ Events } />
+						<Route exact path="/events/new" component={ NewEvent } />
 
-						<Route exact path={ paths.groups.index } component={ Groups } />
+						<Route exact path="/groups" component={ Groups } />
 
-						<Route exact path={ paths.reports.index } component={ Reports } />
+						<Route exact path="/reports" component={ Reports } />
 
 						<Route path="*" component={ FourOhFour } />
 					</Switch>

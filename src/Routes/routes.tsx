@@ -4,18 +4,30 @@ export default  {
 	login: "/login",
 	register: "/register",
 	logout: "/logout",
-	dashboard: {
-		index: ["/", "/dashboard"]
-	},
+
+	dashboard: "/dashboard",
+
 	events: nested("/events", {
-		index: "/",
 		new: "/new",
-		show: "/:id"
+		show: nested("/:id", {
+			settings: "/settings",
+			test: "/:test",
+		})
 	}),
+
 	groups: nested("/groups", {
-		index: "/"
 	}),
+
 	reports: nested("/reports", {
-		index: "/"
+	}),
+
+	test: nested("/test", {
+		nope: "/nope",
+
+		again: nested("/again", {
+			something: "/:yup"
+		})
+
 	})
+
 }
