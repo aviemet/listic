@@ -14,7 +14,7 @@ import LoadingPage from 'Components/LoadingPage'
 import { Login, Register, Logout } from 'Pages/Auth'
 import { Dashboard } from 'Pages/Dashboard' 
 import { Groups } from 'Pages/Groups'
-import { Events, NewEvent } from 'Pages/Lists'
+import { Events, NewEvent, ShowEvent } from 'Pages/Lists'
 import { Reports } from 'Pages/Reports' 
 import { FourOhFour } from 'Pages'
 
@@ -38,6 +38,7 @@ const Routes = observer(() => {
 
 						<Route exact path="/events" component={ Events } />
 						<Route exact path="/events/new" component={ NewEvent } />
+						<Route exact path="/events/:id" component={ ShowEvent } />
 
 						<Route exact path="/groups" component={ Groups } />
 

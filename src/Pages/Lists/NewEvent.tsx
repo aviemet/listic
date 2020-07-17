@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
+import { Link, useParams, useLocation, useHistory, useRouteMatch } from 'react-router-dom'
 
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
@@ -20,10 +20,15 @@ import { useForm } from 'react-hook-form'
 import { newListStyles } from './styles'
 
 const NewEvent = () => {
+	const history = useHistory()
 	const { register, errors, handleSubmit } = useForm()
 
 	const onSubmit = data => {
-		
+		const eventKey = db.ref('events').push(data).key
+		const listKey = db.ref('lists').push({
+			event: eventKey
+		})
+		history.push(`/events/${eventKey}`)
 	}
 	
 	const classes = newListStyles();
@@ -33,7 +38,7 @@ const NewEvent = () => {
 			
 			<div className={ classes.paper }>
 				<Typography component="h1" variant="h5">
-					Create New List
+					Create New Event
 				</Typography>
 				<form className={ classes.form } onSubmit={ handleSubmit(onSubmit) }>
 					<TextField
@@ -42,7 +47,7 @@ const NewEvent = () => {
 						required
 						fullWidth
 						id="title"
-						label="List Title"
+						label="Event Title"
 						name="title"
 						autoComplete="title"
 						autoFocus
