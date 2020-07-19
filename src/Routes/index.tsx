@@ -5,7 +5,7 @@ import { useNamedRoutes } from 'lib/NamedRoutes'
 import PrivateRoute from './PrivateRoute'
 import ConditionalRedirectRoute from './ConditionalRedirectRoute'
 
-import { useUser } from 'data/Users'
+import { useAuth } from 'data'
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { ApplicationLayout } from 'Layout'
@@ -19,17 +19,17 @@ import { Reports } from 'Pages/Reports'
 import { FourOhFour } from 'Pages'
 
 const Routes = observer(() => {	
-	const user = useUser()
+	const auth = useAuth()
 
-	if(user.loading) return <LoadingPage />
+	if(auth.loading) return <LoadingPage />
 
 	return (
 		<Switch>
 
-			<ConditionalRedirectRoute exact path="/login" component={ Login } condition={ user.isLoggedIn } redirect="/" />
-			<ConditionalRedirectRoute exact path="/register" component={ Register } condition={ user.isLoggedIn } redirect="/" />
+			<ConditionalRedirectRoute exact path="/login" component={ Login } condition={ auth.isLoggedIn } redirect="/" />
+			<ConditionalRedirectRoute exact path="/register" component={ Register } condition={ auth.isLoggedIn } redirect="/" />
 
-			<PrivateRoute path="/" isAuthorized={ user.isLoggedIn }>
+			<PrivateRoute path="/" isAuthorized={ auth.isLoggedIn }>
 				<ApplicationLayout>
 					<Switch>
 						<Route exact path="/logout" component={ Logout } />

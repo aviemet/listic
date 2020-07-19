@@ -5,10 +5,10 @@ import AccountCircle from '@material-ui/icons/AccountCircle'
 import MenuItem from '@material-ui/core/MenuItem'
 import Menu from '@material-ui/core/Menu'
 import Divider from '@material-ui/core/Divider'
-import { useUser } from 'data/Users'
+import { useAuth } from 'data'
 
 const AuthMenu = () => {
-	const user = useUser()
+	const auth = useAuth()
 
   const [ anchorEl, setAnchorEl ] = React.useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
@@ -23,7 +23,7 @@ const AuthMenu = () => {
 
   return (
 		<>
-			{ user.isLoggedIn && (
+			{ auth.isLoggedIn && (
 				<div>
 					<IconButton
 						aria-label="account of current user"

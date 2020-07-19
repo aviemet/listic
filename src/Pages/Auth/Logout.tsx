@@ -2,16 +2,16 @@ import React from 'react'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import fire from 'lib/fire'
 import { Redirect } from 'react-router';
-import { useUser } from 'data/Users';
+import { useAuth } from 'data';
 
 const Logout = () => {
-	const user = useUser()
+	const auth = useAuth()
 
 	React.useEffect(() => {
 		fire.auth().signOut()
 	}, [])
 
-	if(user.isLoggedIn) return <CircularProgress />
+	if(auth.isLoggedIn) return <CircularProgress />
 	return <Redirect to="/login" />
 }
 

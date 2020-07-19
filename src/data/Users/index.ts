@@ -1,8 +1,3 @@
-import UserStore from './UserStore'
-import { UserContextProvider, useUser } from './UserStoreContext'
+import UsersStore from './UsersStore'
 
-export {
-	UserStore,
-	UserContextProvider,
-	useUser
-}
+export { UsersStore }
