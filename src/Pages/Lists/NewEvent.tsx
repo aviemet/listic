@@ -1,18 +1,12 @@
 import React from 'react';
-import { Link, useParams, useLocation, useHistory, useRouteMatch } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
-import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Checkbox from '@material-ui/core/Checkbox'
-import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import Container from '@material-ui/core/Container'
 
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-
-import { db } from 'data'
+import { db, useEvents } from 'data'
 
 import { has } from 'lodash'
 import { useForm } from 'react-hook-form'
@@ -22,8 +16,13 @@ import { newListStyles } from './styles'
 const NewEvent = () => {
 	const history = useHistory()
 	const { register, errors, handleSubmit } = useForm()
+	const events = useEvents()
 
 	const onSubmit = data => {
+		const event = events.new()
+		event.set(data)
+		event.save()
+
 		const eventKey = db.ref('events').push(data).key
 		const listKey = db.ref('lists').push({
 			event: eventKey

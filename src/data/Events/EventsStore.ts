@@ -1,13 +1,12 @@
 import { observable } from 'mobx'
-import { db } from 'data'
 import Store from 'lib/Store'
+import { IStore } from 'lib/Store'
+import { EventModel } from 'data/Events'
 
-export default class EventStore extends Store {
-	constructor() {
-		super()
-		this._ref = db.ref('events')
-	}
+export default class EventsStore extends Store {
+	_model = EventModel
+	_base_ref = 'events'
 }
 
-export interface IEventsStore {
+export interface IEventsStore extends IStore {
 }

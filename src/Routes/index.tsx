@@ -1,12 +1,10 @@
 import React from 'react'
 import { Switch, Route } from 'react-router-dom'
-import routes from './routes'
 import { useNamedRoutes } from 'lib/NamedRoutes'
 import PrivateRoute from './PrivateRoute'
 import ConditionalRedirectRoute from './ConditionalRedirectRoute'
 
 import { useAuth } from 'data'
-import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { ApplicationLayout } from 'Layout'
 
@@ -20,6 +18,13 @@ import { FourOhFour } from 'Pages'
 
 const Routes = observer(() => {	
 	const auth = useAuth()
+	const { paths, links } = useNamedRoutes()
+
+	React.useEffect(() => {
+		console.log({ paths })
+		console.log({ events: paths.events.new })
+		console.log({ login: paths.login() })
+	}, [])
 
 	if(auth.loading) return <LoadingPage />
 

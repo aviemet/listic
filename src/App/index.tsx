@@ -1,15 +1,20 @@
 import React from 'react'
-import Providers from 'data/Providers'
+import StoreProviders from 'data/StoreProviders'
 import { BrowserRouter as Router } from 'react-router-dom'
 import Routes from 'Routes'
+import { NamedRoutesProvider } from 'lib/NamedRoutes'
+import routes from 'Routes/routes'
 
 const App = () => {
+
 	return (
-		<Providers>
-			<Router>
-				<Routes />
-			</Router>
-		</Providers>
+		<NamedRoutesProvider value={ routes }>
+			<StoreProviders>
+				<Router>
+					<Routes />
+				</Router>
+			</StoreProviders>
+		</NamedRoutesProvider>
 	)
 }
 

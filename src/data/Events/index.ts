@@ -1,3 +1,4 @@
 import EventsStore from './EventsStore'
+import EventModel from './EventModel'
 
-export { EventsStore }
+export { EventsStore, EventModel }
