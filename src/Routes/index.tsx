@@ -18,36 +18,30 @@ import { FourOhFour } from 'Pages'
 
 const Routes = observer(() => {	
 	const auth = useAuth()
-	const { paths, links } = useNamedRoutes()
-
-	React.useEffect(() => {
-		console.log({ paths })
-		console.log({ events: paths.events.new })
-		console.log({ login: paths.login() })
-	}, [])
+	const routes = useNamedRoutes()
 
 	if(auth.loading) return <LoadingPage />
 
 	return (
 		<Switch>
 
-			<ConditionalRedirectRoute exact path="/login" component={ Login } condition={ auth.isLoggedIn } redirect="/" />
-			<ConditionalRedirectRoute exact path="/register" component={ Register } condition={ auth.isLoggedIn } redirect="/" />
+			<ConditionalRedirectRoute exact path={ routes.login() } component={ Login } condition={ auth.isLoggedIn } redirect="/" />
+			<ConditionalRedirectRoute exact path={ routes.register() } component={ Register } condition={ auth.isLoggedIn } redirect="/" />
 
 			<PrivateRoute path="/" isAuthorized={ auth.isLoggedIn }>
 				<ApplicationLayout>
 					<Switch>
-						<Route exact path="/logout" component={ Logout } />
+						<Route exact path={ routes.logout() } component={ Logout } />
 
-						<Route exact path={ ["/", "/dashboard"] } component={ Dashboard } />
+						<Route exact path={ ["/", routes.dashboard()] } component={ Dashboard } />
 
-						<Route exact path="/events" component={ Events } />
-						<Route exact path="/events/new" component={ NewEvent } />
-						<Route exact path="/events/:id" component={ ShowEvent } />
+						<Route exact path={ routes.events() } component={ Events } />
+						<Route exact path={ routes.events.new() } component={ NewEvent } />
+						<Route exact path={ routes.events.show() } component={ ShowEvent } />
 
-						<Route exact path="/groups" component={ Groups } />
+						<Route exact path={ routes.groups() } component={ Groups } />
 
-						<Route exact path="/reports" component={ Reports } />
+						<Route exact path={ routes.reports() } component={ Reports } />
 
 						<Route path="*" component={ FourOhFour } />
 					</Switch>

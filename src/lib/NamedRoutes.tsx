@@ -1,21 +1,30 @@
 import React from 'react'
+import { generatePath } from "react-router"
+
+const INDEX = "__index__"
+
+const removeTrailingSlash = str => str.replace(/\/$/, '')
 
 // Proxy second argument
 const callableChainableHandler = {
 	get: function(target, key) {
-		console.log({ target, key })
-		console.log('get')
+		if(!target[key]) {
+			console.error(`Error: route ${target[INDEX]}/${key} does not exist`)
+			return false
+		}
 		return target[key]
 	},
 	apply: function(target, that, args) {
-		console.log('apply')
-		return target.__index__
+		if(args.length > 0) {
+			return generatePath(target[INDEX], args[0])
+		}
+		return target[INDEX]
 	}
 }
 
 // Convert routes object to paths object
 const pathsToCallableProxy = (routes: object) => {
-	const paths = {}
+	const paths = routes
 
 	for(const [key, value] of Object.entries(routes)) {
 		if(typeof value === 'object') {
@@ -35,24 +44,15 @@ class CallableChainable extends Function {
 
 		for(const [key, value] of Object.entries(routes)) {
 			if(key !== INDEX) {
-				this[key] === pathsToCallableProxy(value)
+				const route = {}
+				route[key] = value
+				this[key] = new Proxy(new CallableChainable(value), callableChainableHandler)
 			}
 		}
 
 		return new Proxy(this, callableChainableHandler)
 	}
 }
-
-/*
-path() => /
-path.events() => /events
-path.events.new() => /events/new
-path.events.show({ id: 1 }) /events/1
-*/
-
-const removeTrailingSlash = str => str.replace(/\/$/, '')
-
-const INDEX = "__index__"
 
 /**
  * Called in a routes object definition
@@ -77,9 +77,6 @@ export const nested = (base, routes) => {
 				mappedRoutes[key][INDEX] = `${base}${value}`
 			}
 		} else if(typeof value === 'object') {
-			if(base === '/settings') {
-				console.log({ key })
-			}
 			mappedRoutes[key] = nested(base, value)
 		}
 	}
@@ -87,35 +84,22 @@ export const nested = (base, routes) => {
 	return mappedRoutes
 }
 
-// UNUSED RIGHT NOW
-// Converts routes object into links object
-const callableLinksBuilder = routes => {
-	return routes
-}
-
-interface NamedRoutesHookObject {
-	paths: any,
-	links: any
-}
+type NamedRoutesHookObject = {[key: string]: any}
 
 /**
  * Hook for using named routes in a react-router project
  * @param routes routes object
  */
-const NamedRouteContext = React.createContext<NamedRoutesHookObject>({ paths: undefined, links: undefined })
+const NamedRouteContext = React.createContext<NamedRoutesHookObject>({})
 export const useNamedRoutes = () => React.useContext(NamedRouteContext)
 
 export const NamedRoutesProvider = ({ value, children }) => {
 	const nestedValue = nested("", value)
 
-	console.log({ nestedValue })
-
-	// const paths = new callablePathsBuilder(value)
-	const paths = pathsToCallableProxy(nestedValue)
-	const links = callableLinksBuilder(nestedValue)
+	const routes = pathsToCallableProxy(nestedValue)
 	
 	return (
-		<NamedRouteContext.Provider value={ { paths, links} }>
+		<NamedRouteContext.Provider value={ routes }>
 			{ children }
 		</NamedRouteContext.Provider>
 	)
