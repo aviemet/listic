@@ -18,9 +18,12 @@ import { has } from 'lodash'
 import { useForm } from 'react-hook-form'
 
 import { loginStyles } from './styles'
+import routes from 'Routes/routes';
+import { useNamedRoutes } from 'lib/NamedRoutes';
 
 const Login = () => {
   const { register, errors, handleSubmit } = useForm()
+  const routes = useNamedRoutes()
 
   const onSubmit = data => {
     fire.auth().signInWithEmailAndPassword(data.email, data.password).catch(error => {
@@ -91,7 +94,7 @@ const Login = () => {
               <Link to="#">Forgot password?</Link>
             </Grid>
             <Grid item>
-              <Link to="/register">"Don't have an account? Sign Up"</Link>
+              <Link to={ routes.register() }>"Don't have an account? Sign Up"</Link>
             </Grid>
           </Grid>
         </form>

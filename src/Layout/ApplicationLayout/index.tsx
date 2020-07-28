@@ -14,7 +14,7 @@ import MenuIcon from '@material-ui/icons/Menu'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 
 import AuthMenu from './AuthMenu'
-import { mainListItems , secondaryListItems } from './listItems'
+import { MainListItems , SecondaryListItems } from './listItems'
 
 import { layoutStyles } from './styles'
 
@@ -76,11 +76,15 @@ const Dashboard = ({ children }) => {
 
         <Divider />
 
-        <List>{ mainListItems }</List>
+        <List>
+          <MainListItems />
+        </List>
 
         <Divider />
 
-        <List>{ secondaryListItems }</List>
+        <List>
+          <SecondaryListItems />
+        </List>
 
       </Drawer>
 

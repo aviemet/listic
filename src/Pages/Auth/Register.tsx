@@ -19,7 +19,7 @@ import fire from 'lib/fire'
 import { has } from 'lodash'
 
 import Copyright from 'Components/Copyright'
-import { watch } from 'fs';
+import { useNamedRoutes } from 'lib/NamedRoutes';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -42,6 +42,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignUp() {
+  const routes = useNamedRoutes()
+
   const { register, errors, handleSubmit, watch } = useForm()
 
   const onSubmit = data => {
@@ -139,7 +141,7 @@ export default function SignUp() {
 
           <Grid container justify="flex-end">
             <Grid item>
-              <Link to="/login">Already have an account? Sign in</Link>
+              <Link to={ routes.login() }>Already have an account? Sign in</Link>
             </Grid>
           </Grid>
 

@@ -10,67 +10,54 @@ import BarChartIcon from '@material-ui/icons/BarChart';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
 
-export const mainListItems = (
-	<div>
-		<Link to="/dashboard">
-			<ListItem button>
-				<ListItemIcon>
-					<DashboardIcon />
-				</ListItemIcon>
-				<ListItemText primary="Dashboard" />
-			</ListItem>
-		</Link>
+import { useNamedRoutes } from 'lib/NamedRoutes'
 
-		<Link to="/events">
-			<ListItem button>
-				<ListItemIcon>
-					<FormatListBulletedIcon />
-				</ListItemIcon>
-				<ListItemText primary="Events" />
-			</ListItem>
-		</Link>
+const ConditionalLinkWrapper = ({ to, children }) => {
+	if(!to) return <>{ children }</>
+	return <Link to={ to }>{ children }</Link>
+}
 
-		<Link to="/groups">
-			<ListItem button>
-				<ListItemIcon>
-					<PeopleIcon />
-				</ListItemIcon>
-				<ListItemText primary="Groups" />
-			</ListItem>
-		</Link>
+interface IMenuLinkItem {
+	to?: string,
+	text: string,
+	Icon: React.ReactNode | any
+}
 
-		<Link to="/reports">
-			<ListItem button>
-				<ListItemIcon>
-					<BarChartIcon />
-				</ListItemIcon>
-				<ListItemText primary="Reports" />
-			</ListItem>
-		</Link>
-
-	</div>
-);
-
-export const secondaryListItems = (
-	<div>
-		<ListSubheader inset>Saved reports</ListSubheader>
+const MenuLinkItem: React.FC<IMenuLinkItem> = ({ to, text, Icon }) => (
+	<ConditionalLinkWrapper to={ to }>
 		<ListItem button>
 			<ListItemIcon>
-				<AssignmentIcon />
+				<Icon />
 			</ListItemIcon>
-			<ListItemText primary="Current month" />
+			<ListItemText primary={ text } />
 		</ListItem>
-		<ListItem button>
-			<ListItemIcon>
-				<AssignmentIcon />
-			</ListItemIcon>
-			<ListItemText primary="Last quarter" />
-		</ListItem>
-		<ListItem button>
-			<ListItemIcon>
-				<AssignmentIcon />
-			</ListItemIcon>
-			<ListItemText primary="Year-end sale" />
-		</ListItem>
-	</div>
-);
+	</ConditionalLinkWrapper>
+)
+
+export const MainListItems = () => {
+	const routes = useNamedRoutes()
+
+	return (
+		<div>
+			<MenuLinkItem to={ routes.dashboard() } text="Dashboard" Icon={ DashboardIcon } />
+
+			<MenuLinkItem to={ routes.events() } text="Events" Icon={ FormatListBulletedIcon } />
+
+			<MenuLinkItem to={ routes.groups() } text="Groups" Icon={ PeopleIcon } />
+
+			<MenuLinkItem to={ routes.reports() } text="Reports" Icon={ BarChartIcon } />
+		</div>
+	)
+}
+
+export const SecondaryListItems = () => {
+	const routes = useNamedRoutes() 
+
+	return (
+		<div>
+			<ListSubheader inset>Saved reports</ListSubheader>
+
+			<MenuLinkItem text="Current month" Icon={ AssignmentIcon } />
+		</div>
+	)
+}

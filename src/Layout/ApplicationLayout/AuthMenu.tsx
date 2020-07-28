@@ -6,9 +6,11 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Menu from '@material-ui/core/Menu'
 import Divider from '@material-ui/core/Divider'
 import { useAuth } from 'data'
+import { useNamedRoutes } from 'lib/NamedRoutes'
 
 const AuthMenu = () => {
 	const auth = useAuth()
+	const routes = useNamedRoutes()
 
   const [ anchorEl, setAnchorEl ] = React.useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
@@ -52,7 +54,7 @@ const AuthMenu = () => {
 						<MenuItem onClick={ handleClose }>Profile</MenuItem>
 						<MenuItem onClick={ handleClose }>My account</MenuItem>
 						<Divider />
-						<MenuItem onClick={ handleClose }><Link to="/logout">Logout</Link></MenuItem>
+						<MenuItem onClick={ handleClose }><Link to={ routes.logout() }>Logout</Link></MenuItem>
 					</Menu>
 				</div>
 			)}

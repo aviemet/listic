@@ -94,12 +94,14 @@ const NamedRouteContext = React.createContext<NamedRoutesHookObject>({})
 export const useNamedRoutes = () => React.useContext(NamedRouteContext)
 
 export const NamedRoutesProvider = ({ value, children }) => {
-	const nestedValue = nested("", value)
-
-	const routes = pathsToCallableProxy(nestedValue)
+	
+	let memoizedRoutes = React.useMemo(() => {
+		const nestedValue = nested("", value)
+		return pathsToCallableProxy(nestedValue)
+	}, [value])
 	
 	return (
-		<NamedRouteContext.Provider value={ routes }>
+		<NamedRouteContext.Provider value={ memoizedRoutes }>
 			{ children }
 		</NamedRouteContext.Provider>
 	)
