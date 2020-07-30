@@ -10013,6 +10013,11 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^3.0.0"
     inherits "^2.0.1"
 
+rr-named-routes@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/rr-named-routes/-/rr-named-routes-1.0.0.tgz#bb3de18de4bd7c86ff6632ce86046073572eb7cd"
+  integrity sha512-med5gmLrVSxFCcGogqsxspCtEbJLEX+pSjFOSjFtlbeokL7wvoCv2i6XwEGSep4iD86QR7n5f2JKA02hrpQRLA==
+
 rsvp@^4.8.4:
   version "4.8.5"
   resolved "https://registry.yarnpkg.com/rsvp/-/rsvp-4.8.5.tgz#c8f155311d167f68f21e168df71ec5b083113734"

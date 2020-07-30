@@ -10,7 +10,7 @@ import BarChartIcon from '@material-ui/icons/BarChart';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
 
-import { useNamedRoutes } from 'lib/NamedRoutes'
+import { useNamedRoutes } from 'rr-named-routes'
 
 const ConditionalLinkWrapper = ({ to, children }) => {
 	if(!to) return <>{ children }</>

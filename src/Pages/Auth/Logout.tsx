@@ -4,7 +4,7 @@ import fire from 'lib/fire'
 import { Redirect } from 'react-router';
 import { useAuth } from 'data';
 import routes from 'Routes/routes';
-import { useNamedRoutes } from 'lib/NamedRoutes';
+import { useNamedRoutes } from 'rr-named-routes';
 
 const Logout = () => {
 	const auth = useAuth()

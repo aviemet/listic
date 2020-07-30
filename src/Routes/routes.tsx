@@ -1,4 +1,4 @@
-import { nested } from 'lib/NamedRoutes'
+import { nested } from 'rr-named-routes'
 
 export default {
 	login: "/login",

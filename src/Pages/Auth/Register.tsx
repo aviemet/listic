@@ -19,7 +19,7 @@ import fire from 'lib/fire'
 import { has } from 'lodash'
 
 import Copyright from 'Components/Copyright'
-import { useNamedRoutes } from 'lib/NamedRoutes';
+import { useNamedRoutes } from 'rr-named-routes';
 
 const useStyles = makeStyles((theme) => ({
   paper: {

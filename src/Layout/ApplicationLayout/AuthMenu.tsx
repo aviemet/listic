@@ -6,7 +6,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Menu from '@material-ui/core/Menu'
 import Divider from '@material-ui/core/Divider'
 import { useAuth } from 'data'
-import { useNamedRoutes } from 'lib/NamedRoutes'
+import { useNamedRoutes } from 'rr-named-routes'
 
 const AuthMenu = () => {
 	const auth = useAuth()

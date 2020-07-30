@@ -18,8 +18,7 @@ import { has } from 'lodash'
 import { useForm } from 'react-hook-form'
 
 import { loginStyles } from './styles'
-import routes from 'Routes/routes';
-import { useNamedRoutes } from 'lib/NamedRoutes';
+import { useNamedRoutes } from 'rr-named-routes';
 
 const Login = () => {
   const { register, errors, handleSubmit } = useForm()

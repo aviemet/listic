@@ -1,6 +1,6 @@
 import React from 'react'
 import { Switch, Route } from 'react-router-dom'
-import { useNamedRoutes } from 'lib/NamedRoutes'
+import { useNamedRoutes } from 'rr-named-routes'
 import PrivateRoute from './PrivateRoute'
 import ConditionalRedirectRoute from './ConditionalRedirectRoute'
 

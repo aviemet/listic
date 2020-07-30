@@ -14,7 +14,7 @@ import { useForm } from 'react-hook-form'
 import { newListStyles } from './styles'
 
 const NewEvent = () => {
-	const history = useHistory()
+	const history = useHistory() // For redirecting to the event up creation
 	const { register, errors, handleSubmit } = useForm()
 	const events = useEvents()
 
