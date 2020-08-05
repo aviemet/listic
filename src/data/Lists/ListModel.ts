@@ -1,6 +1,6 @@
 import Model from 'lib/Model'
 
-class EventModel extends Model {
+class ListModel extends Model {
 
 	constructor(data: object) {
 		super(data)
@@ -9,11 +9,11 @@ class EventModel extends Model {
 	
 }
 
-interface IEventData {
+interface IListData {
 	id: string,
 	title: string,
 	date: Date,
 	lists: string[]
 }
 
-export default EventModel
+export default ListModel

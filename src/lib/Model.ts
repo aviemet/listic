@@ -2,8 +2,8 @@ import { extendObservable, onBecomeObserved } from "mobx"
 
 class Model {
 
-	constructor(data) {
-		extendObservable(this, data)
+	constructor(data?: object) {
+		if(data) extendObservable(this, data)
 	}
 
 	set(data) {
@@ -24,7 +24,8 @@ class Model {
 }
 
 export interface IModel {
-	
+	set: Function,
+	save: Function
 }
 
 export default Model

@@ -1,3 +1,3 @@
-import UsersStore from './UsersStore'
+import UserModel from './UserModel'
 
-export { UsersStore }
+export { UserModel }

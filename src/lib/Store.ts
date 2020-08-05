@@ -2,8 +2,8 @@ import { db } from 'data'
 import Model from 'lib/Model'
 
 class Store {
-	_model: any
-	_base_ref: string
+	private _model: typeof Model
+	private _base_ref: string
 	instances = new Map()
 
 	constructor(model, ref) {
@@ -32,8 +32,6 @@ class Store {
 }
 
 export interface IStore {
-	_model: object,
-	_base_ref: string,
 	new: Function,
 	fetch: Function
 }

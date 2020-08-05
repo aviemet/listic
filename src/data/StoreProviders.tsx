@@ -1,9 +1,17 @@
 import React from 'react'
 import Store, { IStore } from 'lib/Store'
+import Model from 'lib/Model'
 import AuthStore, { IAuthStore } from 'data/Auth/AuthStore'
-import UsersStore, { IUsersStore } from 'data/Users/UsersStore'
-import EventsStore, { IEventsStore } from 'data/Events/EventsStore'
 import { EventModel } from 'data/Events'
+import { UserModel } from 'data/Users'
+
+type storeContextTuple = [IStore, React.Context<Partial<IStore>>]
+
+const createStoreContext = (model, path: string): storeContextTuple => {
+	const store = new Store(model, path)
+	const context = React.createContext<Partial<IStore>>(store)
+	return [store, context]
+}
 
 /**
  * Auth Store
@@ -15,16 +23,20 @@ export const useAuth = () => React.useContext(AuthStoreContext)
 /**
  * Users Store
  */
-const usersStore = new UsersStore()
-const UsersStoreContext = React.createContext<Partial<IUsersStore>>(usersStore)
+const [usersStore, UsersStoreContext] = createStoreContext(UserModel, 'users')
 export const useUsers = () => React.useContext(UsersStoreContext)
 
 /**
  * Events Store
  */
-const eventsStore = new Store(EventModel, 'events')
-const EventsStoreContext = React.createContext<Partial<IStore>>(eventsStore)
-export const useEvents: any = () => React.useContext(EventsStoreContext)
+const [eventsStore, EventsStoreContext] = createStoreContext(EventModel, 'events')
+export const useEvents = () => React.useContext(EventsStoreContext)
+
+/**
+ * List Store
+ */
+const [listsStore, ListsStoreContext] = createStoreContext(EventModel, 'lists')
+export const useLists = () => React.useContext(ListsStoreContext)
 
 /**
  * Compose providers as wrapper component
@@ -33,7 +45,9 @@ const StoreProviders = ({ children }) => (
 	<AuthStoreContext.Provider value={ authStore }>
 		<UsersStoreContext.Provider value={ usersStore }>
 			<EventsStoreContext.Provider value={ eventsStore }>
-				{ children }
+				<ListsStoreContext.Provider value={ listsStore }>
+					{ children }
+				</ListsStoreContext.Provider>
 			</EventsStoreContext.Provider>
 		</UsersStoreContext.Provider>
 	</AuthStoreContext.Provider>
