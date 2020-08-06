@@ -12,7 +12,7 @@ import LoadingPage from 'Components/LoadingPage'
 import { Login, Register, Logout } from 'Pages/Auth'
 import { Dashboard } from 'Pages/Dashboard' 
 import { Groups } from 'Pages/Groups'
-import { Events, NewEvent, ShowEvent } from 'Pages/Lists'
+import { Events, NewEvent, ShowEvent } from 'Pages/Events'
 import { Reports } from 'Pages/Reports' 
 import { FourOhFour } from 'Pages'
 

@@ -20,13 +20,7 @@ const NewEvent = () => {
 
 	const onSubmit = data => {
 		const event = events.new()
-		event.set(data)
-		event.save()
-
-		const eventKey = db.ref('events').push(data).key
-		const listKey = db.ref('lists').push({
-			event: eventKey
-		})
+		const eventKey = event.save(data).key
 		history.push(`/events/${eventKey}`)
 	}
 	

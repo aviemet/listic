@@ -4,7 +4,7 @@ import Model from 'lib/Model'
 class Store {
 	private _model: typeof Model
 	private _base_ref: string
-	instances = new Map()
+	instances = new Map<string, object>()
 
 	constructor(model, ref) {
 		this._model = model
@@ -12,18 +12,21 @@ class Store {
 	}
 
 	// Creates and returns a new data model
-	new() {
-		return new this._model()
+	new(data?: object) {
+		const model = new this._model(data || {})
+		model._db = db
+		return model
 	}
 
-	fetch(params: string | object, callback) {
+	fetch(params: string | object) {
 		if(typeof params === 'string') {
 			db.ref(`${this._base_ref}/${params}`).on('value', response => {
 				const data = response.val()
-				data.id = params
+				console.log({ data })
 				const dataObject = new this._model(data)
 				this.instances.set(params, dataObject)
-				callback(this.instances.get(params))
+				
+				return this.instances.get(params)
 			})
 		} else {
 			// perform custom query
@@ -33,7 +36,8 @@ class Store {
 
 export interface IStore {
 	new: Function,
-	fetch: Function
+	fetch: Function,
+	instances: Map<string, object>
 }
 
 export default Store

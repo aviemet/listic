@@ -1,12 +1,14 @@
 import Model from 'lib/Model'
+import { db } from 'data'
 
 class EventModel extends Model {
-
-	constructor(data: object) {
-		super(data)
-
-	}
 	
+	onCreate(data) {
+		db.ref('lists').push({
+			event: data.key
+		})
+	}
+
 }
 
 interface IEventData {

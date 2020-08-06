@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import clsx from 'clsx'
 import { createStyles, lighten, makeStyles, Theme } from '@material-ui/core/styles'
 
-
 import Container from '@material-ui/core/Container'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -26,7 +25,8 @@ import Button from '@material-ui/core/Button'
 
 import DeleteIcon from '@material-ui/icons/Delete'
 import FilterListIcon from '@material-ui/icons/FilterList'
-import AddIcon from '@material-ui/icons/Add';
+import AddIcon from '@material-ui/icons/Add'
+import { useEvents } from 'data'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -34,10 +34,16 @@ const useStyles = makeStyles((theme: Theme) =>
       margin: theme.spacing(1),
     },
   }),
-);
+)
 
 const Events = () => {
-	const classes = useStyles();
+	const classes = useStyles()
+	const EventStore = useEvents()
+
+	React.useEffect(() => {
+		const events = EventStore.fetch('')
+		console.log({ events })
+	}, [])
 	
 	return (
     <Container component="main" maxWidth="xl">
@@ -49,9 +55,9 @@ const Events = () => {
 				<Button
 					variant="contained"
 					color="secondary"
-					className={classes.button}
-					startIcon={<AddIcon />}
-					component={ Link }
+					className={ classes.button }
+					startIcon={ <AddIcon /> }
+					component={  Link  }
 					to="/events/new"
 				>
 					New Event
