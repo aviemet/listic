@@ -3,7 +3,9 @@ import Store, { IStore } from 'lib/Store'
 import Model from 'lib/Model'
 import AuthStore, { IAuthStore } from 'data/Auth/AuthStore'
 import { EventModel } from 'data/Events'
+import { ListModel } from 'data/Lists'
 import { UserModel } from 'data/Users'
+import EventsStore from 'data/Events/EventsStore'
 
 type storeContextTuple = [IStore, React.Context<Partial<IStore>>]
 
@@ -29,13 +31,15 @@ export const useUsers = () => React.useContext(UsersStoreContext)
 /**
  * Events Store
  */
-const [eventsStore, EventsStoreContext] = createStoreContext(EventModel, 'events')
+// const [eventsStore, EventsStoreContext] = createStoreContext(EventModel, 'events')
+const eventsStore = new EventsStore()
+const EventsStoreContext = React.createContext(eventsStore)
 export const useEvents = () => React.useContext(EventsStoreContext)
 
 /**
  * List Store
  */
-const [listsStore, ListsStoreContext] = createStoreContext(EventModel, 'lists')
+const [listsStore, ListsStoreContext] = createStoreContext(ListModel, 'lists')
 export const useLists = () => React.useContext(ListsStoreContext)
 
 /**

@@ -19,9 +19,9 @@ const NewEvent = () => {
 	const events = useEvents()
 
 	const onSubmit = data => {
-		const event = events.new()
-		const eventKey = event.save(data).key
-		history.push(`/events/${eventKey}`)
+		// const event = events.new()
+		// const eventKey = event.save(data).key
+		// history.push(`/events/${eventKey}`)
 	}
 	
 	const classes = newListStyles();

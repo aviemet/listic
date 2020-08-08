@@ -1,4 +1,6 @@
-import firebase from 'firebase'
+import * as firebase from 'firebase'
+import 'firebase/analytics'
+import 'firebase/auth'
 
 export const config = {
   apiKey: "AIzaSyDin-xOT8bMoecdkDCIbWvlg43UtfASgzA",

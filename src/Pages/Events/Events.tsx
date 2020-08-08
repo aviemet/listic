@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import clsx from 'clsx'
 import { createStyles, lighten, makeStyles, Theme } from '@material-ui/core/styles'
 
@@ -26,7 +26,7 @@ import Button from '@material-ui/core/Button'
 import DeleteIcon from '@material-ui/icons/Delete'
 import FilterListIcon from '@material-ui/icons/FilterList'
 import AddIcon from '@material-ui/icons/Add'
-import { useEvents } from 'data'
+import { useEvents, db } from 'data'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -41,8 +41,9 @@ const Events = () => {
 	const EventStore = useEvents()
 
 	React.useEffect(() => {
-		const events = EventStore.fetch('')
-		console.log({ events })
+		EventStore.getEvents(events => {
+			console.log({ events })
+		})
 	}, [])
 	
 	return (
