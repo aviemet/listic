@@ -9,7 +9,7 @@ export default {
 	events: nested("/events", {
 		new: "/new",
 		show: nested("/:id", {
-			settings: "/settings"
+			edit: "/edit"
 		})
 	}),
 

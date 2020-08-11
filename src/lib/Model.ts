@@ -4,7 +4,6 @@ import { extendObservable, observable, onBecomeObserved } from "mobx"
 // db.set(data) overwrites data including child nodes
 // db.update(data) updates only the values provided, can update multiple nodes at once
 
-
 class Model {
 	_db: firebase.database.Database
 	data = {}

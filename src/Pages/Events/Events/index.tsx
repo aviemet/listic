@@ -21,12 +21,16 @@ import Tooltip from '@material-ui/core/Tooltip'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
 import Grid from '@material-ui/core/Grid'
-import Button from '@material-ui/core/Button'
+import { Button } from 'Components/ui'
 
 import DeleteIcon from '@material-ui/icons/Delete'
 import FilterListIcon from '@material-ui/icons/FilterList'
 import AddIcon from '@material-ui/icons/Add'
-import { useEvents, db } from 'data'
+import EditIcon from '@material-ui/icons/Edit'
+
+import { useEvents } from 'data'
+import { useNamedRoutes } from 'rr-named-routes'
+import moment from 'moment'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -39,9 +43,15 @@ const useStyles = makeStyles((theme: Theme) =>
 const Events = () => {
 	const classes = useStyles()
 	const EventStore = useEvents()
+	const routes = useNamedRoutes()
+
+	const [ loading, setLoading ] = React.useState(true)
+	const [ events, setEvents ] = React.useState({})
 
 	React.useEffect(() => {
 		EventStore.getEvents(events => {
+			setLoading(false)
+			setEvents(events)
 			console.log({ events })
 		})
 	}, [])
@@ -58,8 +68,8 @@ const Events = () => {
 					color="secondary"
 					className={ classes.button }
 					startIcon={ <AddIcon /> }
-					component={  Link  }
-					to="/events/new"
+					component={ Link }
+					to={ routes.events.new() }
 				>
 					New Event
 				</Button>
@@ -78,13 +88,27 @@ const Events = () => {
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						<TableRow>
-							<TableCell>Value</TableCell>
-							<TableCell>Value</TableCell>
-							<TableCell>Value</TableCell>
-							<TableCell>Value</TableCell>
-							<TableCell>Value</TableCell>
-						</TableRow>
+						{ !loading && Object.entries(events).map(([key, event]: any) => (
+							<TableRow key={ key }>
+								<TableCell>
+									<Link to={ routes.events.show({ id: key }) }>{ event.title }</Link>
+								</TableCell>
+								<TableCell>{ moment(event.date).format('M/D/YY') }</TableCell>
+								<TableCell>{ event.lists.length }</TableCell>
+								<TableCell>{ event.lists.reduce((guests, list) => {
+									return guests + list.guestCount
+								}, 0) }</TableCell>
+								<TableCell>
+									<Button
+										color="secondary"
+										startIcon={ <EditIcon /> }
+										className={ classes.button }
+										component={ Link }
+										to={ routes.events.show.edit({ id: key }) }
+									/>
+								</TableCell>
+							</TableRow>
+						))}
 					</TableBody>
 				</Table>
 			</TableContainer>

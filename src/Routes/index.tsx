@@ -12,7 +12,7 @@ import LoadingPage from 'Components/LoadingPage'
 import { Login, Register, Logout } from 'Pages/Auth'
 import { Dashboard } from 'Pages/Dashboard' 
 import { Groups } from 'Pages/Groups'
-import { Events, NewEvent, ShowEvent } from 'Pages/Events'
+import { Events, NewEvent, ShowEvent, EditEvent } from 'Pages/Events'
 import { Reports } from 'Pages/Reports' 
 import { FourOhFour } from 'Pages'
 
@@ -38,6 +38,7 @@ const Routes = observer(() => {
 						<Route exact path={ routes.events() } component={ Events } />
 						<Route exact path={ routes.events.new() } component={ NewEvent } />
 						<Route exact path={ routes.events.show() } component={ ShowEvent } />
+						<Route exact path={ routes.events.show.edit() } component={ EditEvent } />
 
 						<Route exact path={ routes.groups() } component={ Groups } />
 
