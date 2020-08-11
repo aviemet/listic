@@ -1,61 +1,39 @@
 import React from 'react'
+import clsx from 'clsx'
 
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Container from '@material-ui/core/Container'
-import { makeStyles } from '@material-ui/core/styles'
 
+import { layoutStyles } from './styles'
 import TopBar from './TopBar'
 import SideBar from './SideBar'
 
-import { layoutStyles } from './styles'
-import styled from 'styled-components'
-
-const Dashboard = ({ children }) => {
-  const classes = layoutStyles()
+const ApplicationLayout = ({ children }) => {
+	const classes = layoutStyles()
 	
-  const [open, setOpen] = React.useState(false)
+	const [open, setOpen] = React.useState(false)
+	
+  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight)
 
   return (
-    <AppContainer>
+    <div className={ classes.root }>
       <CssBaseline />
 
       <TopBar open={ open } handleDrawerOpen={ () => setOpen(true) } />
 
       <SideBar open={ open } handleDrawerClose={ () => setOpen(false) } />
 
-      <Content>
-        <AppBarSpacer />
+      <main className={ classes.content }>
+        <div className={ classes.appBarSpacer } />
 
-        <ContentContainer maxWidth="lg">
-          { children }
-        </ContentContainer>
-        
-      </Content>
+        <Container maxWidth="lg" className={ classes.container }>
+					{ children }
+        </Container>
+				
+      </main>
 
-    </AppContainer>
+    </div>
   )
 }
 
-const AppContainer = styled.div`
-  display: flex;
-`
-
-const Content = styled.main`
-  flex-grow: 1;
-  height: 100vh;
-  overflow: auto;
-`
-
-const AppBarSpacer = styled(({ children, ...props}) => {
-  // Arguably the simplest way to pull the toolbar styles out of MUI
-  const classes = makeStyles(theme => ({ appBarSpacer: theme.mixins.toolbar }))
-
-  return <div { ...props } className={ classes().appBarSpacer }> { children } </div>
-})``
-
-const ContentContainer = styled(Container)`${({ theme }) => `
-  padding-top: ${theme.spacing(4)}px;
-  padding-bottom: ${theme.spacing(4)}px;
-`}`
-
-export default Dashboard
+export default ApplicationLayout

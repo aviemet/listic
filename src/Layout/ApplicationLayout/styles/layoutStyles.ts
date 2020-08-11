@@ -3,6 +3,9 @@ import { makeStyles } from '@material-ui/core/styles'
 const drawerWidth = 240
 
 export default makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+  },
 
   toolbar: {
     paddingRight: 24, // keep right padding when drawer closed
@@ -65,6 +68,14 @@ export default makeStyles((theme) => ({
     [theme.breakpoints.up('sm')]: {
       width: theme.spacing(9),
     },
+  },
+
+  appBarSpacer: theme.mixins.toolbar,
+  
+  content: {
+    flexGrow: 1,
+    height: '100vh',
+    overflow: 'auto',
   },
 
   container: {
