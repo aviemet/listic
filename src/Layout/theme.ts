@@ -1,6 +1,6 @@
 import { createMuiTheme } from '@material-ui/core/styles'
-import { orange } from '@material-ui/core/colors'
-import { makeStyles } from '@material-ui/core/styles'
+import { orange, blue } from '@material-ui/core/colors'
+
 interface CustomThemeProperties {
   drawerWidth: number
 }
@@ -14,6 +14,9 @@ declare module '@material-ui/core/styles/createMuiTheme' {
 const theme = createMuiTheme({
   drawerWidth: 240,
   palette: {
+    primary: {
+      main: blue[900]
+    },
     secondary: {
       main: orange[500],
     }

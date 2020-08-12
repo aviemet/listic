@@ -11,7 +11,7 @@ import { useApp } from 'data'
 
 import AuthMenu from './AuthMenu'
 
-import { layoutStyles } from './styles'
+import { topbarStyles } from './styles'
 import { observer } from 'mobx-react-lite'
 
 interface TopBarProps {
@@ -22,10 +22,15 @@ interface TopBarProps {
 const TopBar = observer(({ open, handleDrawerOpen }: TopBarProps) => {
   const AppStore = useApp()
 
-	const classes = layoutStyles()
+	const classes = topbarStyles()
 
   return (
-		<AppBar position="absolute" className={ clsx(classes.appBar, open && classes.appBarShift) }>
+		<AppBar 
+			position="absolute"
+			className={ clsx(classes.appBar, {
+				[classes.appBarShift]: open
+			}) }
+		>
 
         <Toolbar className={ classes.toolbar }>
           <IconButton

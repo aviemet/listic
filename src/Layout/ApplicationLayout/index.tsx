@@ -1,5 +1,4 @@
 import React from 'react'
-import clsx from 'clsx'
 
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Container from '@material-ui/core/Container'
@@ -8,32 +7,52 @@ import { layoutStyles } from './styles'
 import TopBar from './TopBar'
 import SideBar from './SideBar'
 
+import styled from 'styled-components'
+import { makeStyles } from '@material-ui/core'
+
+const useStyles = makeStyles(theme => ({
+  appBarSpacer: theme.mixins.toolbar,
+
+  container: {
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
+  }
+}))
+
 const ApplicationLayout = ({ children }) => {
-	const classes = layoutStyles()
+  const classes = useStyles()
 	
 	const [open, setOpen] = React.useState(false)
-	
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight)
 
   return (
-    <div className={ classes.root }>
+    <AppContainer>
       <CssBaseline />
 
       <TopBar open={ open } handleDrawerOpen={ () => setOpen(true) } />
 
       <SideBar open={ open } handleDrawerClose={ () => setOpen(false) } />
 
-      <main className={ classes.content }>
+      <ContentContainer>
         <div className={ classes.appBarSpacer } />
 
         <Container maxWidth="lg" className={ classes.container }>
 					{ children }
         </Container>
 				
-      </main>
+      </ContentContainer>
 
-    </div>
+    </AppContainer>
   )
 }
+
+const AppContainer = styled.div`
+  display: 'flex';
+`
+
+const ContentContainer = styled.main`
+  flex-grow: 1;
+  height: 100vh;
+  overflow: 'auto';
+`
 
 export default ApplicationLayout

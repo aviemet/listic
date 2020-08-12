@@ -1,7 +1,7 @@
 import React from 'react'
 import StoreProviders from 'data/StoreProviders'
 
-import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
+import { ThemeProvider as MuiThemeProvider, StylesProvider } from '@material-ui/core/styles';
 import { ThemeProvider as StyledThemeProvider } from 'styled-components';
 import theme from 'Layout/theme'
 
@@ -25,7 +25,7 @@ const App = () => {
 
 					</StyledThemeProvider>
 				</MuiThemeProvider>
-
+				
 			</StoreProviders>
 		</NamedRoutesProvider>
 	)
