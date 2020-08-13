@@ -33,17 +33,24 @@ const ApplicationLayout = ({ children }) => {
       <SideBar open={ open } handleDrawerClose={ () => setOpen(false) } />
 
       <ContentContainer>
-        <div className={ classes.appBarSpacer } />
+        <AppBarSpacer />
 
-        <Container maxWidth="lg" className={ classes.container }>
+        <Content maxWidth="lg">
 					{ children }
-        </Container>
+        </Content>
 				
       </ContentContainer>
 
     </AppContainer>
   )
 }
+
+const AppBarSpacer = styled(props => {
+  const classes = makeStyles(theme => ({
+    appBarSpacer: theme.mixins.toolbar
+  }))()
+  return <div { ...props } className={ classes.appBarSpacer } />
+})``
 
 const AppContainer = styled.div`
   display: 'flex';
@@ -54,5 +61,10 @@ const ContentContainer = styled.main`
   height: 100vh;
   overflow: 'auto';
 `
+
+const Content = styled(Container)`${({ theme }) => `
+  padding-top: ${theme.spacing(4)}px;
+  padding-bottom: ${theme.spacing(4)}px;
+`}`
 
 export default ApplicationLayout

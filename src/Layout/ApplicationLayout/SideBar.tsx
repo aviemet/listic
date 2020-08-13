@@ -21,9 +21,9 @@ interface SideBarProps {
 const SideBar = ({ open, handleDrawerClose }: SideBarProps) => {
 
   return (
-		<AppDrawer variant="permanent">
+		<AppDrawer variant="permanent" open={ open } id="AppDrawer">
 
-			<ToolBarIcon id="SHIT">
+			<ToolBarIcon id="ToolBarIcon">
 				<IconButton onClick={ () => handleDrawerClose() }>
 					<ChevronLeftIcon />
 				</IconButton>
@@ -45,7 +45,7 @@ const SideBar = ({ open, handleDrawerClose }: SideBarProps) => {
   )
 }
 
-const AppDrawer = styled(({ children, ...rest }) => {
+const AppDrawer = styled(({ open, children, ...rest }) => {
 	const classes = makeStyles(theme => ({
 		drawerPaper: {
 			position: 'relative',
@@ -68,7 +68,7 @@ const AppDrawer = styled(({ children, ...rest }) => {
 				width: theme.spacing(9),
 			},
 		},
-	}))
+	}))()
 	return <Drawer { ...rest } 
 		classes={ {
 			//@ts-ignore
@@ -77,17 +77,21 @@ const AppDrawer = styled(({ children, ...rest }) => {
 				[classes.drawerPaperClose]: !open
 			}),
 		} }>{ children }</Drawer>
-})``
+})`
+	position: fixed;
+	flex-shrink: 0
+`
 
 const ToolBarIcon = styled(({ children, ...rest }) => {
-	const classes = makeStyles(theme => ({ toolbarIcon: {...theme.mixins.toolbar} }))
+	const classes = makeStyles(theme => ({ toolbar: {...theme.mixins.toolbar} }))()
 	//@ts-ignore
-	return <div { ...rest } className={ classes.toolbarIcon }>{ children }</div>
+	return <div { ...rest } className={ classes.toolbar }>{ children }</div>
 })`
 	display: flex;
 	align-items: center;
 	justify-content: flex-end;
 	padding: 0 8px;
+	border: 2px solid orange;
 `
 
 export default SideBar

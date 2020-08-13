@@ -32,26 +32,27 @@ const TopBar = observer(({ open, handleDrawerOpen }: TopBarProps) => {
 			}) }
 		>
 
-        <Toolbar className={ classes.toolbar }>
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            onClick={ () => handleDrawerOpen() }
-            className={ clsx(classes.menuButton, open && classes.menuButtonHidden) }
-          >
-            <MenuIcon />
-          </IconButton>
+      <Toolbar className={ classes.toolbar }>
+        <IconButton
+          edge="start"
+          color="inherit"
+          aria-label="open drawer"
+          onClick={ () => handleDrawerOpen() }
+          className={ clsx(classes.menuButton, {
+            [classes.menuButtonHidden]: open
+          }) }
+        >
+          <MenuIcon />
+        </IconButton>
 
-          <Typography component="h1" variant="h6" color="inherit" noWrap className={ classes.title }>
-            Guest Lists
-          </Typography>
+        <Typography component="h1" variant="h6" color="inherit" noWrap className={ classes.title }>
+          Guest Lists
+        </Typography>
 
-					<AuthMenu />
-        </Toolbar>
+        <AuthMenu />
+      </Toolbar>
 
-
-      </AppBar>
+    </AppBar>
   )
 })
 
