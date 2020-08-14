@@ -15,7 +15,6 @@ import { Groups } from 'Pages/Groups'
 import { Events, NewEvent, ShowEvent, EditEvent } from 'Pages/Events'
 import { Reports } from 'Pages/Reports' 
 import { FourOhFour } from 'Pages'
-import Test from 'Pages/Test'
 
 const Routes = observer(() => {	
 	const auth = useAuth()
