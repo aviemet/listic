@@ -20,5 +20,7 @@ export default {
 	settings: nested("/settings", {
 		__index__: false,
 		user: "/user"
-	})
+	}),
+
+	test: "/test"
 }

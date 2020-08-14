@@ -3,68 +3,81 @@ import React from 'react'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Container from '@material-ui/core/Container'
 
+import ResponsiveDrawer from 'Components/ui/ResponsiveDrawer'
+import Drawer from '@material-ui/core/Drawer';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import List from '@material-ui/core/List';
+import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import InboxIcon from '@material-ui/icons/MoveToInbox';
+import MailIcon from '@material-ui/icons/Mail';
+
 import { layoutStyles } from './styles'
 import TopBar from './TopBar'
 import SideBar from './SideBar'
+import AuthMenu from './AuthMenu'
+import { MainListItems, SecondaryListItems } from './listItems'
 
 import styled from 'styled-components'
 import { makeStyles } from '@material-ui/core'
 
-const useStyles = makeStyles(theme => ({
-  appBarSpacer: theme.mixins.toolbar,
-
-  container: {
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
-  }
-}))
-
-const ApplicationLayout = ({ children }) => {
-  const classes = useStyles()
-	
+const ApplicationLayout = ({ children }) => {	
 	const [open, setOpen] = React.useState(false)
 
   return (
     <AppContainer>
       <CssBaseline />
 
-      <TopBar open={ open } handleDrawerOpen={ () => setOpen(true) } />
+      <ResponsiveDrawer 
+        open={ open } 
+        handleClose={ () => setOpen(false) } 
+        handleOpen={ () => setOpen(true) }
+      >
+        <MainListItems />
 
-      <SideBar open={ open } handleDrawerClose={ () => setOpen(false) } />
+        <Divider />
 
+        <SecondaryListItems />
+
+      </ResponsiveDrawer>
+      
       <ContentContainer>
-        <AppBarSpacer />
+        <AppBar
+          position="fixed"
+        >
+          <Toolbar>
+            <AuthMenu />
+          </Toolbar>
+        </AppBar>
 
-        <Content maxWidth="lg">
-					{ children }
+        <Content>
+          { children }
         </Content>
-				
       </ContentContainer>
 
     </AppContainer>
   )
 }
 
-const AppBarSpacer = styled(props => {
-  const classes = makeStyles(theme => ({
-    appBarSpacer: theme.mixins.toolbar
-  }))()
-  return <div { ...props } className={ classes.appBarSpacer } />
-})``
-
 const AppContainer = styled.div`
-  display: 'flex';
+  display: flex;
 `
 
-const ContentContainer = styled.main`
-  flex-grow: 1;
-  height: 100vh;
-  overflow: 'auto';
+const ContentContainer = styled(Container)`
+  flex: 1;
 `
 
-const Content = styled(Container)`${({ theme }) => `
-  padding-top: ${theme.spacing(4)}px;
-  padding-bottom: ${theme.spacing(4)}px;
-`}`
+const Content = styled(Container)`
+
+`
+
 
 export default ApplicationLayout

@@ -55,9 +55,9 @@ export const SecondaryListItems = () => {
 
 	return (
 		<div>
-			<ListSubheader inset>Saved reports</ListSubheader>
+			<ListSubheader inset>Upcoming Events</ListSubheader>
 
-			<MenuLinkItem text="Current month" Icon={ AssignmentIcon } />
+			<MenuLinkItem text="An Event" Icon={ AssignmentIcon } />
 		</div>
 	)
 }
