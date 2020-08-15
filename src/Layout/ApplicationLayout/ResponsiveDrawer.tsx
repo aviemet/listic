@@ -3,14 +3,15 @@ import clsx from 'clsx';
 
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
+import { makeStyles } from '@material-ui/core'
 
-import { useApp } from 'data';
 import ToggleButton from './ToggleButton'
 
+import { useApp } from 'data';
 import useWidth from 'lib/useWidth';
+
 import { observer } from 'mobx-react-lite';
 import styled from 'styled-components'
-import { makeStyles } from '@material-ui/core'
 
 
 const useStyles = makeStyles(theme => ({

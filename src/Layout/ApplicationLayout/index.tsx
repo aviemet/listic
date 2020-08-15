@@ -2,7 +2,7 @@ import React from 'react'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Container from '@material-ui/core/Container'
 
-import ResponsiveDrawer from 'Components/ui/ResponsiveDrawer'
+import ResponsiveDrawer from './ResponsiveDrawer'
 import Divider from '@material-ui/core/Divider'
 
 import { MainListItems, SecondaryListItems } from './listItems'
