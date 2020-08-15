@@ -10,15 +10,25 @@ import ToggleButton from './ToggleButton'
 import useWidth from 'lib/useWidth';
 import { observer } from 'mobx-react-lite';
 import styled from 'styled-components'
+import { makeStyles } from '@material-ui/core'
+
+
+const useStyles = makeStyles(theme => ({
+	drawerPaper: {
+		overflowX: 'hidden'
+	}
+}))
 
 const ResponsiveDrawer = observer(({ children }) => {
 	const AppStore = useApp()
+	const classes = useStyles()
 	const width = useWidth()
 
 	return (
 		<StyledDrawer 
 			variant={ width === "xs" ? "temporary" : "permanent"}
 			className={ clsx({ open: AppStore.menuOpen }) }
+			classes={ { paper: classes.drawerPaper } }
 			open={ AppStore.menuOpen }
 		>
 
