@@ -18,22 +18,21 @@ import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 
+import { useApp } from 'data';
+
 import styled from 'styled-components'
+import { observer } from 'mobx-react-lite';
 
-interface ToggleButtonProps {
-	open: boolean,
-	handleOpen: Function,
-	handleClose: Function
-}
+const ToggleButton = observer(() => {
+	const AppStore = useApp()
 
-const ToggleButton = ({ open, handleOpen, handleClose }: ToggleButtonProps) => {
 	return (
-		<ButtonContainer disableGutters={ !open }>
-			{ open && <CloseButton handleClose={ handleClose } /> }
-			{ !open && <OpenButton handleOpen={ handleOpen } /> }
+		<ButtonContainer disableGutters={ !AppStore.menuOpen }>
+			{ AppStore.menuOpen && <CloseButton handleClose={ AppStore.hideMenu } /> }
+			{ !AppStore.menuOpen && <OpenButton handleOpen={ AppStore.showMenu } style={ { paddingRight: 18 } } /> }
 		</ButtonContainer>
 	)
-}
+})
 
 const CloseButton = ({ handleClose }) => (
 	<IconButton onClick={ () => handleClose() }>
@@ -41,11 +40,11 @@ const CloseButton = ({ handleClose }) => (
 	</IconButton>
 )
 
-const OpenButton = ({ handleOpen }) => (
-	<IconButton onClick={ () => handleOpen() } style={ { paddingRight: 18 } }>
+const OpenButton = ({ handleOpen, ...rest }) => { console.log({ handleOpen }); return(
+	<IconButton onClick={ () => handleOpen() } { ...rest }>
 		<MenuIcon />
 	</IconButton>
-)
+)}
 
 const ButtonContainer = styled(Toolbar)`
 	display: flex;
@@ -53,4 +52,5 @@ const ButtonContainer = styled(Toolbar)`
 	justify-content: flex-end;
 `
 
+export { CloseButton, OpenButton }
 export default ToggleButton

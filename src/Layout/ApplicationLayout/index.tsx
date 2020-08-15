@@ -3,16 +3,20 @@ import clsx from 'clsx'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Container from '@material-ui/core/Container'
 
+import Typography from '@material-ui/core/Typography'
 import ResponsiveDrawer from 'Components/ui/ResponsiveDrawer'
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Divider from '@material-ui/core/Divider';
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import Divider from '@material-ui/core/Divider'
+import Hidden from '@material-ui/core/Hidden'
 
 import AuthMenu from './AuthMenu'
 import { MainListItems, SecondaryListItems } from './listItems'
 
 import styled from 'styled-components'
 import { makeStyles } from '@material-ui/core'
+import { OpenButton } from 'Components/ui/ResponsiveDrawer/ToggleButton'
+
 
 const useStyles = makeStyles(theme => ({
   topBarTransition: {
@@ -32,11 +36,7 @@ const ApplicationLayout = ({ children }) => {
     <AppContainer>
       <CssBaseline />
 
-      <ResponsiveDrawer 
-        open={ open } 
-        handleClose={ () => setOpen(false) } 
-        handleOpen={ () => setOpen(true) }
-      >
+      <ResponsiveDrawer>
         <MainListItems />
 
         <Divider />
@@ -54,7 +54,12 @@ const ApplicationLayout = ({ children }) => {
           }}
         >
           <Toolbar>
-            <h1>Guest List</h1>
+            <Hidden smUp>
+              <OpenButton handleOpen={ () => setOpen(true) } />
+            </Hidden>
+            <FlexHeading component="h1" variant="h6" noWrap>
+              Responsive drawer
+            </FlexHeading>
             <AuthMenu />
           </Toolbar>
         </TopBar>
@@ -79,12 +84,18 @@ const ContentContainer = styled(Container)`
 `
 
 const TopBar = styled(AppBar)`${({ theme }) => `
-  padding-left: ${theme.drawerWidthClosed}px;
+  ${theme.breakpoints.up("sm")} {
+    padding-left: ${theme.drawerWidthClosed}px;
 
-  &.open {
-    padding-left: ${theme.drawerWidthOpen}px;
+    &.open {
+      padding-left: ${theme.drawerWidthOpen}px;
+    }
   }
 `}`
+
+const FlexHeading = styled(Typography)`
+  flex-grow: 1;
+`
 
 const Content = styled(Container)`
 
