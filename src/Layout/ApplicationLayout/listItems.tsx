@@ -1,4 +1,5 @@
 import React from 'react';
+
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -8,13 +9,14 @@ import PeopleIcon from '@material-ui/icons/People';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
+import Tooltip from '@material-ui/core/Tooltip'
+import { withStyles } from '@material-ui/core'
 
 import Link from 'Components/ui/Link'
 
 import { useNamedRoutes } from 'rr-named-routes'
-import { Tooltip, makeStyles, withStyles } from '@material-ui/core';
 import { useApp } from 'data';
-import { observer } from 'mobx-react-lite';
+import { observer } from 'mobx-react-lite'
 
 const ConditionalLinkWrapper = ({ to, children }) => {
 	if(!to) return <>{ children }</>
@@ -74,14 +76,15 @@ export const MainListItems = () => {
 	)
 }
 
-export const SecondaryListItems = () => {
-	const routes = useNamedRoutes() 
+export const SecondaryListItems = observer(() => {
+	const AppStore = useApp()
+	const routes = useNamedRoutes()
 
 	return (
 		<div>
-			<ListSubheader inset>Upcoming Events</ListSubheader>
+			{ AppStore.menuOpen && <ListSubheader inset>Upcoming Events</ListSubheader> }
 
 			<MenuLinkItem text="An Event" Icon={ AssignmentIcon } />
 		</div>
 	)
-}
+})
