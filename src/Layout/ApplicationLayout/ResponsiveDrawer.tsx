@@ -15,8 +15,21 @@ import styled from 'styled-components'
 
 
 const useStyles = makeStyles(theme => ({
+	root: {
+		position: 'relative',
+		height: '100vh',
+		width: theme.drawerWidthClosed,
+
+		transition: theme.transitions.create(['width', 'margin'], {
+			easing: theme.transitions.easing.sharp,
+			duration: theme.transitions.duration.enteringScreen,
+		})
+	},
 	drawerPaper: {
-		overflowX: 'hidden'
+		overflowX: 'hidden',
+		position: 'absolute',
+		whiteSpace: 'nowrap',
+		width: 'inherit'
 	}
 }))
 
@@ -29,7 +42,10 @@ const ResponsiveDrawer = observer(({ children }) => {
 		<StyledDrawer 
 			variant={ width === "xs" ? "temporary" : "permanent"}
 			className={ clsx({ open: AppStore.menuOpen }) }
-			classes={ { paper: classes.drawerPaper } }
+			classes={ { 
+				root: classes.root, 
+				paper: classes.drawerPaper
+			} }
 			open={ AppStore.menuOpen }
 		>
 
@@ -44,10 +60,6 @@ const ResponsiveDrawer = observer(({ children }) => {
 })
 
 const StyledDrawer = styled(Drawer)`${({ theme }) => `
-	transition: ${theme.transitions.create(['width', 'margin'], {
-		easing: theme.transitions.easing.sharp,
-		duration: theme.transitions.duration.enteringScreen,
-	})};
 	&.open {
 		width: ${theme.drawerWidthOpen}px;
 	}

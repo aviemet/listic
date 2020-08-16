@@ -25,20 +25,6 @@ const theme = createMuiTheme({
     secondary: {
       main: orange[500],
     }
-  },
-  overrides: {
-    MuiDrawer: {
-      root: {
-        position: 'relative',
-        height: '100vh',
-        width: drawerWidthClosed
-      },
-      paper: {
-        position: 'absolute',
-        whiteSpace: 'nowrap',
-        width: 'inherit'
-      }
-    }
   }
 })
 

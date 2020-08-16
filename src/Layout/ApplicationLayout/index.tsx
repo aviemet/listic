@@ -36,9 +36,7 @@ const ApplicationLayout = ({ children }) => {
 
         <div className={classes.toolbar} />
 
-        <Content>
-          { children }
-        </Content>
+        { children }
       </ContentContainer>
 
     </AppContainer>
@@ -47,14 +45,12 @@ const ApplicationLayout = ({ children }) => {
 
 const AppContainer = styled.div`
   display: flex;
+  max-width: 100vw;
 `
 
-const ContentContainer = styled(Container)`
+const ContentContainer = styled.div`
   flex: 1;
-`
-
-const Content = styled(Container)`
-
+  min-width: 1px;
 `
 
 
