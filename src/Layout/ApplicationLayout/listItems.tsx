@@ -12,6 +12,9 @@ import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
 import Link from 'Components/ui/Link'
 
 import { useNamedRoutes } from 'rr-named-routes'
+import { Tooltip, makeStyles, withStyles } from '@material-ui/core';
+import { useApp } from 'data';
+import { observer } from 'mobx-react-lite';
 
 const ConditionalLinkWrapper = ({ to, children }) => {
 	if(!to) return <>{ children }</>
@@ -24,16 +27,36 @@ interface IMenuLinkItem {
 	Icon: React.ReactNode | any
 }
 
-const MenuLinkItem: React.FC<IMenuLinkItem> = ({ to, text, Icon }) => (
-	<ConditionalLinkWrapper to={ to }>
-		<ListItem button>
-			<ListItemIcon>
-				<Icon />
-			</ListItemIcon>
-			<ListItemText primary={ text } />
-		</ListItem>
-	</ConditionalLinkWrapper>
-)
+const HoverTooltip = withStyles(theme => ({
+	tooltip: {
+		backgroundColor: theme.palette.common.white,
+		color: theme.palette.common.black,
+		fontSize: 16,
+		lineHeight: '2.5rem',
+		width: 200,
+		border: '1px solid #CCC',
+		borderRadius: 0,
+		margin: '0 0 0 1px',
+		height: 50
+	}
+}))(Tooltip)
+
+const MenuLinkItem: React.FC<IMenuLinkItem> = observer(({ to, text, Icon }) => {
+	const AppStore = useApp()
+
+	return (
+		<ConditionalLinkWrapper to={ to }>
+			<HoverTooltip title={ AppStore.menuOpen ? '' : text } placement='right'>
+				<ListItem button>
+					<ListItemIcon>
+						<Icon />
+					</ListItemIcon>
+					<ListItemText primary={ text } />
+				</ListItem>
+			</HoverTooltip>
+		</ConditionalLinkWrapper>
+	)
+})
 
 export const MainListItems = () => {
 	const routes = useNamedRoutes()

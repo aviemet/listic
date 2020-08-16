@@ -12,17 +12,27 @@ import { useApp } from 'data'
 
 import AuthMenu from './AuthMenu'
 
-import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 
 const useStyles = makeStyles(theme => ({
-  topBarTransition: {
+  topbar: {
     transition: theme.transitions.create(['padding'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
-    })
+    }),
+    [theme.breakpoints.up('sm')]: {
+      paddingLeft: theme.drawerWidthClosed
+    }
   },
-  toolbar: theme.mixins.toolbar
+  topbarShift: {
+    [theme.breakpoints.up('sm')]: {
+      paddingLeft: theme.drawerWidthOpen
+    }
+  },
+  toolbar: theme.mixins.toolbar,
+  heading: {
+    flex: 1
+  }
 }))
 
 const TopBar = observer(() => {
@@ -31,38 +41,24 @@ const TopBar = observer(() => {
   const classes = useStyles()
 
   return (
-		<StyledAppBar
+		<AppBar
       position="fixed"
-      className={ clsx({ open: AppStore.menuOpen }) }
+      className={ clsx({ [classes.topbarShift]: AppStore.menuOpen }) }
       classes={{
-        root: classes.topBarTransition
+        root: classes.topbar,
       }}
     >
-      <Toolbar>
+      <Toolbar className={ clsx(classes.toolbar) }>
         <Hidden smUp>
           <OpenButton handleOpen={ () => AppStore.showMenu() } />
         </Hidden>
-        <FlexHeading component="h1" variant="h6" noWrap>
-          Responsive drawer
-        </FlexHeading>
+        <Typography component="h1" variant="h6" noWrap className={ clsx(classes.heading) }>
+          { AppStore.title }
+        </Typography>
         <AuthMenu />
       </Toolbar>
-    </StyledAppBar>
+    </AppBar>
   )
 })
-
-const StyledAppBar = styled(AppBar)`${({ theme }) => `
-  ${theme.breakpoints.up("sm")} {
-    padding-left: ${theme.drawerWidthClosed}px;
-
-    &.open {
-      padding-left: ${theme.drawerWidthOpen}px;
-    }
-  }
-`}`
-
-const FlexHeading = styled(Typography)`
-  flex-grow: 1;
-`
 
 export default TopBar

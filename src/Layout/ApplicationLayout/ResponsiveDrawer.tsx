@@ -11,8 +11,6 @@ import { useApp } from 'data';
 import useWidth from 'lib/useWidth';
 
 import { observer } from 'mobx-react-lite';
-import styled from 'styled-components'
-
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -24,6 +22,9 @@ const useStyles = makeStyles(theme => ({
 			easing: theme.transitions.easing.sharp,
 			duration: theme.transitions.duration.enteringScreen,
 		})
+	},
+	drawerOpen: {
+		width: theme.drawerWidthOpen
 	},
 	drawerPaper: {
 		overflowX: 'hidden',
@@ -39,9 +40,9 @@ const ResponsiveDrawer = observer(({ children }) => {
 	const width = useWidth()
 
 	return (
-		<StyledDrawer 
+		<Drawer 
 			variant={ width === "xs" ? "temporary" : "permanent"}
-			className={ clsx({ open: AppStore.menuOpen }) }
+			className={ clsx({ [classes.drawerOpen]: AppStore.menuOpen }) }
 			classes={ { 
 				root: classes.root, 
 				paper: classes.drawerPaper
@@ -55,14 +56,8 @@ const ResponsiveDrawer = observer(({ children }) => {
 
 			{ children }
 
-		</StyledDrawer>
+		</Drawer>
 	)
 })
-
-const StyledDrawer = styled(Drawer)`${({ theme }) => `
-	&.open {
-		width: ${theme.drawerWidthOpen}px;
-	}
-`}`
 
 export default ResponsiveDrawer
