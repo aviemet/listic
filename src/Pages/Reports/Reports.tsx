@@ -1,8 +1,11 @@
 import React from 'react'
+import Container from '@material-ui/core/Container'
 
 const Reports = () => {
 	return (
-		<h1>Reports</h1>
+		<Container maxWidth="lg">
+			<h1>Reports</h1>
+		</Container>
 	)
 }
 

@@ -18,9 +18,9 @@ import { useNamedRoutes } from 'rr-named-routes'
 import { useApp } from 'data';
 import { observer } from 'mobx-react-lite'
 
-const ConditionalLinkWrapper = ({ to, children }) => {
+const ConditionalLinkWrapper = ({ to, children, ...rest }) => {
 	if(!to) return <>{ children }</>
-	return <Link to={ to }>{ children }</Link>
+	return <Link to={ to } { ...rest }>{ children }</Link>
 }
 
 interface IMenuLinkItem {
@@ -46,9 +46,22 @@ const HoverTooltip = withStyles(theme => ({
 const MenuLinkItem: React.FC<IMenuLinkItem> = observer(({ to, text, Icon }) => {
 	const AppStore = useApp()
 
+	const [tooltipOpen, setTooltipOpen] = React.useState(false)
+
+	const handleClick = e => {
+		AppStore.hideMenu()
+		setTooltipOpen(false)
+	}
+
 	return (
-		<ConditionalLinkWrapper to={ to }>
-			<HoverTooltip title={ AppStore.menuOpen ? '' : text } placement='right'>
+		<ConditionalLinkWrapper to={ to } onClick={ handleClick }>
+			<HoverTooltip 
+				title={ AppStore.menuOpen ? '' : text }
+				placement='right'
+				open={ tooltipOpen }
+				onOpen={ () => setTooltipOpen(true) }
+				onClose={ () => setTooltipOpen(false) }
+			>
 				<ListItem button>
 					<ListItemIcon>
 						<Icon />

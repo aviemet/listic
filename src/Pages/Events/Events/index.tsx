@@ -21,7 +21,7 @@ import Tooltip from '@material-ui/core/Tooltip'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
 import Grid from '@material-ui/core/Grid'
-import { Button } from 'Components/ui'
+import Button from '@material-ui/core/Button'
 
 import DeleteIcon from '@material-ui/icons/Delete'
 import FilterListIcon from '@material-ui/icons/FilterList'
@@ -32,13 +32,17 @@ import { useEvents } from 'data'
 import { useNamedRoutes } from 'rr-named-routes'
 import moment from 'moment'
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    button: {
-      margin: theme.spacing(1),
-    },
-  }),
-)
+const useStyles = makeStyles(theme => ({
+	button: {
+		margin: theme.spacing(1),
+	},
+	titlebar: {
+		display: 'flex'
+	},
+	h1: {
+		flex: 1
+	}
+}))
 
 const Events = () => {
 	const classes = useStyles()
@@ -57,12 +61,10 @@ const Events = () => {
 	}, [])
 	
 	return (
-    <Container component="main" maxWidth="xl">
-			<Grid container spacing={ 2 }>
-				<Grid item xs={ 12 } sm={ 6 }>
-					<h1>Upcoming Events</h1>
-				</Grid>
-				<Grid item xs={ 12 } sm={ 6 }>
+    <Container maxWidth="lg">
+			<div className={ clsx(classes.titlebar) }>
+				<h1 className={ clsx(classes.h1) }>Upcoming Events</h1>
+
 				<Button
 					variant="contained"
 					color="secondary"
@@ -73,8 +75,8 @@ const Events = () => {
 				>
 					New Event
 				</Button>
-				</Grid>
-			</Grid>
+
+			</div>
 
 			<TableContainer>
 				<Table>
@@ -99,13 +101,12 @@ const Events = () => {
 									return guests + list.guestCount
 								}, 0) }</TableCell>
 								<TableCell>
-									<Button
+									<IconButton
 										color="secondary"
-										startIcon={ <EditIcon /> }
 										className={ classes.button }
 										component={ Link }
 										to={ routes.events.show.edit({ id: key }) }
-									/>
+									><EditIcon /></IconButton>
 								</TableCell>
 							</TableRow>
 						))}
