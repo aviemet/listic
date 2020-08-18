@@ -6,6 +6,7 @@ import { IEventsStore } from 'data/Events/EventsStore'
 import ListTabs from './ListsTabs'
 import { Container } from '@material-ui/core'
 import styled from 'styled-components'
+import Filter from './Filter'
 
 const ShowEvent = () => {
 	const { id: eventId } = useParams()
@@ -28,17 +29,18 @@ const ShowEvent = () => {
 		return () => AppStore.resetTitle()
 	}, [])
 
-	if(loading) {
-		return <Loading />
-	}
-
 	if(!event) {
 		return <h1>Event Not Found</h1>
 	}
 
 	return (
 		<FullWidth>
-			<ListTabs />
+			<Container>
+				<Filter />
+			</Container>
+
+			{ loading ? <Loading /> : <ListTabs /> }
+
 		</FullWidth>
 	)
 }
