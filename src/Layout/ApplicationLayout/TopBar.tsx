@@ -4,7 +4,6 @@ import clsx from 'clsx'
 import Hidden from '@material-ui/core/Hidden'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
-import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core'
 import { OpenButton } from './ToggleButton'
 
@@ -13,6 +12,7 @@ import { useApp } from 'data'
 import AuthMenu from './AuthMenu'
 
 import { observer } from 'mobx-react-lite'
+import AppBarTitle from 'Components/AppBarTitle'
 
 const useStyles = makeStyles(theme => ({
   topbar: {
@@ -49,13 +49,17 @@ const TopBar = observer(() => {
       }}
     >
       <Toolbar className={ clsx(classes.toolbar) }>
+
         <Hidden smUp>
           <OpenButton handleOpen={ () => AppStore.showMenu() } />
         </Hidden>
-        <Typography component="h1" variant="h6" noWrap className={ clsx(classes.heading) }>
-          { AppStore.title }
-        </Typography>
+
+        <div className={ classes.heading }>
+          { typeof AppStore.title === "string" ? <AppBarTitle text={ AppStore.title } /> : AppStore.title }
+        </div>
+
         <AuthMenu />
+
       </Toolbar>
     </AppBar>
   )

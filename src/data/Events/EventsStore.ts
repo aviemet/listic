@@ -1,5 +1,18 @@
 import { db, auth, ROLES } from 'data'
 
+interface IList {
+	acl: object[],
+	title: string,
+	guests?: object[]
+}
+
+interface IEventWithLists {
+	acl: object[],
+	createdBy: string,
+	date: string,
+	listsMeta: object[],
+	lists: object[]
+}
 
 export default class EventsStore {
 	private _refString = 'events'
@@ -14,10 +27,43 @@ export default class EventsStore {
 		return !!role
 	}
 
+	/**
+	 * Fetch a single event object, no ansilary data included
+	 * @param key id of Event
+	 * @param callback receives event object
+	 */
 	getEvent(key, callback) {
 		const eventRef = db.ref(`${this._refString}/${key}`)
 		eventRef.on('value', event => {
 			callback(event.val())
+		})
+	}
+
+	/**
+	 * Fetch a single event and all associated lists
+	 * @param key id of Event
+	 * @param callback receives { event, lists } object
+	 */
+	getEventWithLists(key, callback) {
+		const eventObject: { event?: { [key: string]: any }, lists?: object[] } = { event: {}, lists: []}
+
+		const eventRef = db.ref(`${this._refString}/${key}`)
+
+		eventRef.on('value', (event: any) => {
+			eventObject.event = event.val()
+
+			if(eventObject.event) {
+				eventObject.event.listsMeta.forEach(listIndex => {
+					db.ref(`lists/${listIndex.key}`).on('value', list => {
+						eventObject.lists.push(list.val())
+						if(eventObject.lists.length === eventObject.event.listsMeta.length) {
+							callback(eventObject)
+						}
+					})
+				})
+			} else {
+				callback({ event: false, lists: [] })
+			}
 		})
 	}
 
@@ -50,7 +96,7 @@ export default class EventsStore {
 
 		// Create the event
 		const eventKey = this._ref.push(Object.assign(data, {
-			lists: [
+			listsMeta: [
 				{
 					key: listKey,
 					guestCount: 0

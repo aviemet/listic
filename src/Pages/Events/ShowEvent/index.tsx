@@ -3,7 +3,7 @@ import { useParams } from 'react-router'
 import { useApp, useEvents } from 'data'
 import Loading from 'Components/LoadingPage'
 import { IEventsStore } from 'data/Events/EventsStore'
-import ListTabs from './ListsTabs'
+import ListTabs from '../ListsTabs'
 import { Container } from '@material-ui/core'
 import styled from 'styled-components'
 import Filter from './Filter'
@@ -39,7 +39,7 @@ const ShowEvent = () => {
 				<Filter />
 			</Container>
 
-			{ loading ? <Loading /> : <ListTabs /> }
+			{ loading ? <Loading /> : <ListTabs lists={ [] } /> }
 
 		</FullWidth>
 	)

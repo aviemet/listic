@@ -19,7 +19,8 @@ export default class AppStore {
 }
 
 export interface IAppStore {
-	title: string,
+	defaultTitle: string,
+	title: string | JSX.Element,
 	resetTitle: Function,
 	menuOpen: boolean,
 	showMenu: Function,

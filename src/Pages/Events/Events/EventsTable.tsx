@@ -31,7 +31,6 @@ import EditIcon from '@material-ui/icons/Edit'
 import { useEvents } from 'data'
 import { useNamedRoutes } from 'rr-named-routes'
 import moment from 'moment'
-import EventsTable from './EventsTable'
 
 const useStyles = makeStyles(theme => ({
 	button: {
@@ -45,44 +44,47 @@ const useStyles = makeStyles(theme => ({
 	}
 }))
 
-const Events = () => {
+const EventsTable = ({ events }) => {
 	const classes = useStyles()
-	const EventStore = useEvents()
 	const routes = useNamedRoutes()
-
-	const [ loading, setLoading ] = React.useState(true)
-	const [ events, setEvents ] = React.useState({})
-
-	React.useEffect(() => {
-		EventStore.getEvents(events => {
-			setLoading(false)
-			setEvents(events)
-			console.log({ events })
-		})
-	}, [])
 	
 	return (
-    <Container maxWidth="lg">
-			<div className={ clsx(classes.titlebar) }>
-				<h1 className={ clsx(classes.h1) }>Upcoming Events</h1>
-
-				<Button
-					variant="contained"
-					color="secondary"
-					className={ classes.button }
-					startIcon={ <AddIcon /> }
-					component={ Link }
-					to={ routes.events.new() }
-				>
-					New Event
-				</Button>
-
-			</div>
-
-			{ !loading && events && <EventsTable events={ events } /> }
-
-		</Container>
+		<TableContainer>
+			<Table>
+				<TableHead>
+					<TableRow>
+						<TableCell><TableSortLabel>Title</TableSortLabel></TableCell>
+						<TableCell><TableSortLabel>Date</TableSortLabel></TableCell>
+						<TableCell><TableSortLabel>Lists</TableSortLabel></TableCell>
+						<TableCell><TableSortLabel>Guests</TableSortLabel></TableCell>
+						<TableCell><TableSortLabel>Actions</TableSortLabel></TableCell>
+					</TableRow>
+				</TableHead>
+				<TableBody>
+					{ events && Object.entries(events).map(([key, event]: any) => (
+						<TableRow key={ key }>
+							<TableCell>
+								<Link to={ routes.events.show({ id: key }) }>{ event.title }</Link>
+							</TableCell>
+							<TableCell>{ moment(event.date).format('M/D/YY') }</TableCell>
+							<TableCell>{ event.listsMeta.length }</TableCell>
+							<TableCell>{ event.listsMeta.reduce((guests, list) => {
+								return guests + list.guestCount
+							}, 0) }</TableCell>
+							<TableCell>
+								<IconButton
+									color="secondary"
+									className={ classes.button }
+									component={ Link }
+									to={ routes.events.show.edit({ id: key }) }
+								><EditIcon /></IconButton>
+							</TableCell>
+						</TableRow>
+					)) }
+				</TableBody>
+			</Table>
+		</TableContainer>
 	)
 }
 
-export default Events
+export default EventsTable

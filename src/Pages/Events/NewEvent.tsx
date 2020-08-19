@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { useNamedRoutes } from 'rr-named-routes'
 
@@ -11,7 +11,23 @@ import { useEvents } from 'data'
 
 import { useForm } from 'react-hook-form'
 
-import { newListStyles } from './styles'
+import { makeStyles } from '@material-ui/core/styles'
+
+const useStyles = makeStyles(theme => ({
+  paper: {
+    marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+}))
 
 const NewEvent = () => {
 	const routes = useNamedRoutes()
@@ -25,7 +41,7 @@ const NewEvent = () => {
 		})
 	}
 	
-	const classes = newListStyles();
+	const classes = useStyles()
 
 	return (
 		<Container component="main" maxWidth="lg">
@@ -72,7 +88,7 @@ const NewEvent = () => {
 				</form>
 			</div>
 		</Container>
-	);
+	)
 }
 
 export default NewEvent
