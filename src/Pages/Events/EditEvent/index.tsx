@@ -23,17 +23,6 @@ const EditEvent = () => {
 	// const [ event, setEvent ] = React.useState<Partial<IEventsStore>>({})
 	
 	React.useEffect(() => {
-		EventsStore.getEventWithLists(eventId, event => {
-			// if(!EventsStore.isAuthorized(event.acl))
-
-			console.log({ event })
-
-			eventRef.current = event
-			setLoading(false)
-			AppStore.title = <TitleEditInput event={ event } onSubmit={ () => {} } />
-		})
-
-		return () => AppStore.resetTitle()
 	}, [])
 
 	if(loading) {

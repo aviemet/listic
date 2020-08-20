@@ -16,17 +16,9 @@ const ShowEvent = () => {
 	const [ loading, setLoading ] = React.useState(true)
 	const [ event, setEvent ] = React.useState<Partial<IEventsStore>>({})
 	
-	React.useEffect(() => {		
-		EventsStore.getEvent(eventId, event => {
-			setLoading(false)
-			setEvent(event)
-
-			if(event) {
-				AppStore.title = event.title
-			}
-
-		})
-		return () => AppStore.resetTitle()
+	React.useEffect(() => {
+		const event = EventsStore.fetch(eventId)
+		console.log({ event })
 	}, [])
 
 	if(!event) {

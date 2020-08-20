@@ -47,17 +47,15 @@ const useStyles = makeStyles(theme => ({
 
 const Events = () => {
 	const classes = useStyles()
-	const EventStore = useEvents()
+	const EventsStore = useEvents()
 	const routes = useNamedRoutes()
 
 	const [ loading, setLoading ] = React.useState(true)
 	const [ events, setEvents ] = React.useState({})
 
 	React.useEffect(() => {
-		EventStore.getEvents(events => {
-			setLoading(false)
-			setEvents(events)
-			console.log({ events })
+		const events = EventsStore.fetch(response => {
+			console.log({ response })
 		})
 	}, [])
 	

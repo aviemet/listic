@@ -1,11 +1,6 @@
 import Model from 'lib/Model'
 
 class UserModel extends Model {
-
-	constructor(data: object) {
-		super(data)
-
-	}
 	
 }
 

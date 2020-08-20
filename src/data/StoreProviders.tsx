@@ -39,9 +39,9 @@ export const useUsers = () => React.useContext(UsersStoreContext)
 /**
  * Events Store
  */
-// const [eventsStore, EventsStoreContext] = createStoreContext(EventModel, 'events')
-const eventsStore = new EventsStore()
-const EventsStoreContext = React.createContext(eventsStore)
+const [eventsStore, EventsStoreContext] = createStoreContext(EventModel, 'events')
+// const eventsStore = new EventsStore()
+// const EventsStoreContext = React.createContext(eventsStore)
 export const useEvents = () => React.useContext(EventsStoreContext)
 
 /**

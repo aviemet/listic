@@ -4,14 +4,37 @@ import { extendObservable, observable, onBecomeObserved } from "mobx"
 // db.set(data) overwrites data including child nodes
 // db.update(data) updates only the values provided, can update multiple nodes at once
 
+interface IModelData {
+	key: string
+}
+
 class Model implements IModel {
 	_db: firebase.database.Database
-	data = {}
+	_base_ref: string
+	_ref: firebase.database.Reference
+	
+	@observable data: Partial<IModelData> = {}
+	
+	protected _key: string
+	get key(){
+		return this._key
+	}
+	
+	protected beforeSave(data: object){}
+	protected afterSave(data: object){}
 
-	protected onCreate(data){}
-
-	constructor(data?: object) {
-		if(data) extendObservable(this.data, data)
+	/**
+	 * Initialize database references and create a new record for this model
+	 * Save the database reference and record key on the instance
+	 * @param db Database instance
+	 * @param base_ref Node base location as string
+	 */
+	constructor(db, base_ref: string) {
+		this._db = db
+		this._base_ref = base_ref
+		// Create a new record to retrieve a key, store the reference
+		this._ref = this._db.ref(`${base_ref}`).push()
+		this._key = this._ref.key
 	}
 
 	/**
@@ -20,32 +43,31 @@ class Model implements IModel {
 	 */
 	set(data) {
 		for(const [key, val] of Object.entries(data)) {
-			if(this[key]) {
-				this[key] = val
+			if(this.data[key]) {
+				this.data[key] = val
 			} else {
-				const objToExtend = {}
-				objToExtend[key] = val
-				extendObservable(this.data, objToExtend)
+				extendObservable(this.data, { [key]: val })
 			}
 		}
 	}
 
-	save(data?: object, errorCallback?: Function): firebase.database.ThenableReference {
+	save(data?: object, errorCallback?: Function) {
 		if(data) this.set(data)
 
-		const result = this._db.ref('events').push(this.data, function(error) {
+		// Lifecycle before hooks
+		this.beforeSave(this.data)
+
+		// Perform save action
+		return this._ref.update(this.data, function(error) {
 			if(error) {
-				errorCallback(error)
-			} else {
-				console.log({ this: this })
+				errorCallback({ error })
 			}
+		}).then(() => {
+			// Lifecycle after hooks
+			this.afterSave(this.data)
+
+			errorCallback(false)
 		})
-
-		if(!this.data.hasOwnProperty('key')) {
-			this.onCreate(result)
-		}
-
-		return result
 	}
 }
 

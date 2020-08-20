@@ -10,13 +10,13 @@ import Model from 'lib/Model'
  * Each record instantiates a Model object which facilitates
  * 	syncronizing local data to the database
  */
-class Store {
+class Store implements IStore {
 	private _model: typeof Model
 	private _base_ref: string
 
-	protected _instances = new Map<string, Model>()
+	protected _records = new Map<string, Model>()
 	get data() {
-		return Array.from(this._instances, ([_, model]) => {
+		return Array.from(this._records, ([_, model]) => {
 			return model
 		})
 	}
@@ -34,42 +34,43 @@ class Store {
 		this._base_ref = ref
 	}
 
-	// Creates and returns a new data model
-	// To be used when creating a new record
-	new(data?: object) {
-		const model = new this._model(data || {})
-		model._db = db
+	/**
+	 * Creates and returns a new data model
+	 */
+	new() {
+		const model = new this._model(db, this._base_ref)
+		this._records.set(model.data.key, model)
 		return model
 	}
 
 	// store.fetch() Fetch all records at ref, return array
 	// store.fetch("{id}") Fetch a single record, return it
 	// store.fetch({search options}) Perform advanced find, return array
-	fetch(params?: string | object) {
-		let ref
-
-		if(!params) {
-			ref = db.ref(`${this._base_ref}`)
+	fetch(params?: string | object | Function, callback?: Function) {
+		if(!params || typeof params === "function") {
+			//@ts-ignore
+			return this._fetchPaginatedRecords(params || callback)
 		} else if(typeof params === 'string') {
-			ref = db.ref(`${this._base_ref}/${params}`)
+			return this._findById(params, callback)
 		} else {
-			// perform custom query
+			// Advanced find not yet implemented
 		}
-
-		return this._query(ref)
 	}
 
-	async _query(ref) {
-		return new Promise((resolve, reject) => {
-			ref.on('value', response => {
-				const data = response.val()
-				console.log({ data })
-				this._instances.set(data.key, new this._model(data))
-				resolve(this.data)
-			})
+	private _fetchPaginatedRecords(callback?: Function) {
+		const ref = db.ref(`${this._base_ref}`).on('value', response => {
+			const events = response.val()
+			console.log({ events })
+			for(const [key, val] of Object.entries(events)) {
+				console.log({ [key]: val })
+			}
+			console.log({ response: response.val() })
 		})
 	}
 
+	private _findById(id: string, callback?: Function) {
+		return db.ref(`${this._base_ref}/${id}`)
+	}
 }
 
 export interface IStore {
