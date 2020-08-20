@@ -1,4 +1,4 @@
-import { db, auth, ROLES } from 'data'
+import { db, auth, ROLES } from 'lib/fire'
 
 interface IList {
 	acl: object[],

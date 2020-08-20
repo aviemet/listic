@@ -1,5 +1,5 @@
 import { extendObservable, observable, onBecomeObserved } from "mobx"
-import { db } from 'data'
+import { db } from 'lib/fire'
 
 // db.push(data) create node and returns key
 // db.set(data) overwrites data including child nodes

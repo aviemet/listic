@@ -1,5 +1,5 @@
 import Model from 'lib/Model'
-import { db } from 'data'
+import { db } from 'lib/fire'
 
 class EventModel extends Model implements Partial<IEventData> {
 	_base_ref = 'events'

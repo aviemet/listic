@@ -1,6 +1,6 @@
 import React from 'react'
-import Store, { IStore } from 'lib/Store'
 import Model from 'lib/Model'
+import Store, { IStore } from 'lib/Store'
 import AppStore, { IAppStore } from './AppStore'
 import AuthStore, { IAuthStore } from 'data/Auth/AuthStore'
 import { EventModel } from 'data/Events'
@@ -10,7 +10,7 @@ import EventsStore from 'data/Events/EventsStore'
 
 type storeContextTuple = [IStore, React.Context<Partial<IStore>>]
 
-const createStoreContext = (model, path: string): storeContextTuple => {
+const createStoreContext = (model: typeof Model, path: string): storeContextTuple => {
 	const store = new Store(model, path)
 	const context = React.createContext<Partial<IStore>>(store)
 	return [store, context]

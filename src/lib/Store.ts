@@ -1,4 +1,4 @@
-import { db } from 'data'
+import { db } from 'lib/fire'
 import Model from 'lib/Model'
 
 // db.on('value', ...) Creates a responsive connection to the data
@@ -10,8 +10,8 @@ import Model from 'lib/Model'
  * Each record instantiates a Model object which facilitates
  * 	syncronizing local data to the database
  */
-class Store implements IStore {
-	protected _model!: typeof Model
+class Store {
+	protected _model: typeof Model
 	protected _base_ref: string
 
 	protected _records = new Map<string, Model>()
@@ -66,9 +66,13 @@ class Store implements IStore {
 	private _fetchPaginatedRecords(callback?: Function) {
 		const ref = db.ref(`${this._base_ref}`).on('value', response => {
 			const events: [{[key: string]: object}] = response.val()
+
+			if(!events) return
+
 			for(const [key, val] of Object.entries(events)) {
 				this._records.set(key, new this._model({ [key]: val }))
 			}
+
 			if(callback) callback(this.data)
 		})
 	}

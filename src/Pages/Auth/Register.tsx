@@ -15,8 +15,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-import fire from 'lib/fire'
 import { has } from 'lodash'
+import { useAuth } from 'data'
 
 import Copyright from 'Components/Copyright'
 import { useNamedRoutes } from 'rr-named-routes';
@@ -42,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignUp() {
+  const auth = useAuth()
   const routes = useNamedRoutes()
 
   const { register, errors, handleSubmit, watch } = useForm()
@@ -49,7 +50,7 @@ export default function SignUp() {
   const onSubmit = data => {
     if(data.password !== data.passwordCheck) return
 
-    fire.auth().createUserWithEmailAndPassword(data.email, data.password).catch(error => {
+    auth.register(data.email, data.password).catch(error => {
       console.error({ error })
     })
   }

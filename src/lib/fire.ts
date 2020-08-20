@@ -1,8 +1,15 @@
-import * as firebase from 'firebase'
+import firebase from 'firebase'
 import 'firebase/analytics'
 import 'firebase/auth'
 
-export const config = {
+const ROLES = {
+	admin: 'admin',
+	owner: 'owner',
+	editor: 'editor',
+	user: 'user'
+}
+
+const config = {
   apiKey: "AIzaSyDin-xOT8bMoecdkDCIbWvlg43UtfASgzA",
   authDomain: "listic-17cbd.firebaseapp.com",
   databaseURL: "https://listic-17cbd.firebaseio.com",
@@ -15,6 +22,13 @@ export const config = {
 
 // Initialize Firebase
 const fire = firebase.initializeApp(config)
-firebase.analytics()
+if(process.env.NODE_ENV === 'production') {
+  firebase.analytics()
+}
 
-export default fire
+console.log({ fire })
+
+const db = fire.database()
+const auth = fire.auth()
+
+export { fire, db, auth, ROLES }

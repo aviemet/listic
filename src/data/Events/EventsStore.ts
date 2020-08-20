@@ -1,4 +1,4 @@
-import { db, auth, ROLES } from 'data'
+import { db, auth, ROLES } from 'lib/fire'
 import Store from 'lib/Store'
 import EventModel from './EventModel'
 

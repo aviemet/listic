@@ -93,3 +93,14 @@ export default function StyledComponentsDeep() {
   );
 }
 ```
+
+### Setup
+
+After running `yarn`, install the firebase cli tools:
+`npm i -g firebase-tools`
+
+Initialize the firebase project:
+`firebase init`
+
+Before testing, initialize the firebase emulator:
+`firebase init emulators`

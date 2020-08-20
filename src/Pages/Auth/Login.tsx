@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import { Link } from 'react-router-dom'
 
 import Avatar from '@material-ui/core/Avatar'
@@ -10,27 +10,25 @@ import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import Container from '@material-ui/core/Container'
 
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 
-import fire from 'lib/fire'
-
+import { useAuth } from 'data';
 import { has } from 'lodash'
 import { useForm } from 'react-hook-form'
 
 import { loginStyles } from './styles'
-import { useNamedRoutes } from 'rr-named-routes';
+import { useNamedRoutes } from 'rr-named-routes'
 
 const Login = () => {
+	const auth = useAuth()
   const { register, errors, handleSubmit } = useForm()
   const routes = useNamedRoutes()
 
   const onSubmit = data => {
-    fire.auth().signInWithEmailAndPassword(data.email, data.password).catch(error => {
-      console.error({ error })
-    });
+    auth.signIn(data.email, data.password)
   }
 
-	const classes = loginStyles();
+	const classes = loginStyles()
 
   return (
     <Container component="main" maxWidth="xs">
@@ -99,7 +97,7 @@ const Login = () => {
         </form>
       </div>
     </Container>
-  );
+  )
 }
 
 export default Login
