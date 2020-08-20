@@ -11,8 +11,8 @@ import Model from 'lib/Model'
  * 	syncronizing local data to the database
  */
 class Store implements IStore {
-	private _model: typeof Model
-	private _base_ref: string
+	protected _model!: typeof Model
+	protected _base_ref: string
 
 	protected _records = new Map<string, Model>()
 	get data() {
@@ -35,10 +35,10 @@ class Store implements IStore {
 	}
 
 	/**
-	 * Creates and returns a new data model
+	 * Returns a data Model
 	 */
-	new() {
-		const model = new this._model(db, this._base_ref)
+	new(data?: { [key: string]: object }) {
+		const model = new this._model(data || null)
 		this._records.set(model.data.key, model)
 		return model
 	}
@@ -47,9 +47,15 @@ class Store implements IStore {
 	// store.fetch("{id}") Fetch a single record, return it
 	// store.fetch({search options}) Perform advanced find, return array
 	fetch(params?: string | object | Function, callback?: Function) {
+		// Super hacky
+		if(typeof params === "function") { 
+			callback = params 
+			params = undefined
+		}
+
 		if(!params || typeof params === "function") {
 			//@ts-ignore
-			return this._fetchPaginatedRecords(params || callback)
+			return this._fetchPaginatedRecords(callback)
 		} else if(typeof params === 'string') {
 			return this._findById(params, callback)
 		} else {
@@ -59,12 +65,11 @@ class Store implements IStore {
 
 	private _fetchPaginatedRecords(callback?: Function) {
 		const ref = db.ref(`${this._base_ref}`).on('value', response => {
-			const events = response.val()
-			console.log({ events })
+			const events: [{[key: string]: object}] = response.val()
 			for(const [key, val] of Object.entries(events)) {
-				console.log({ [key]: val })
+				this._records.set(key, new this._model({ [key]: val }))
 			}
-			console.log({ response: response.val() })
+			if(callback) callback(this.data)
 		})
 	}
 

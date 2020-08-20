@@ -61,14 +61,14 @@ const EventsTable = ({ events }) => {
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{ events && Object.entries(events).map(([key, event]: any) => (
-						<TableRow key={ key }>
+					{ events.map(event => (
+						<TableRow key={ event.key }>
 							<TableCell>
-								<Link to={ routes.events.show({ id: key }) }>{ event.title }</Link>
+								<Link to={ routes.events.show({ id: event.key }) }>{ event.data.title }</Link>
 							</TableCell>
-							<TableCell>{ moment(event.date).format('M/D/YY') }</TableCell>
-							<TableCell>{ event.listsMeta.length }</TableCell>
-							<TableCell>{ event.listsMeta.reduce((guests, list) => {
+							<TableCell>{ moment(event.data.date).format('M/D/YY') }</TableCell>
+							<TableCell>{ event.data.lists.length }</TableCell>
+							<TableCell>{ event.data.lists.reduce((guests, list) => {
 								return guests + list.guestCount
 							}, 0) }</TableCell>
 							<TableCell>
@@ -76,7 +76,7 @@ const EventsTable = ({ events }) => {
 									color="secondary"
 									className={ classes.button }
 									component={ Link }
-									to={ routes.events.show.edit({ id: key }) }
+									to={ routes.events.show.edit({ id: event.key }) }
 								><EditIcon /></IconButton>
 							</TableCell>
 						</TableRow>
