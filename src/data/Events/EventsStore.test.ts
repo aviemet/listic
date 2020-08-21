@@ -1,29 +1,40 @@
 import Store from 'lib/Store'
 import EventsStore from './EventsStore'
 import EventModel from './EventModel'
+import uuid from 'uuid/v4'
 
 describe('EventsStore', () => {
+	const eventsStore = new EventsStore()
+
 	it('Instantiates', () => {
-		const store = new EventsStore()
-
-		expect(store).toBeInstanceOf(Store)
+		expect(eventsStore).toBeInstanceOf(Store)
 	})
 
-	it('Should create a new record when calling new with no args', () => {
-		const eventsStore = new EventsStore()
-		const event = eventsStore.new()
-		expect(event).toBeInstanceOf(EventModel)
-		expect(event).toHaveProperty('_key')
+	describe('EventsStore.create(data?)', () => {
+
+		// EventStore.create()
+		it('Should return an empty EventModel when called with no args', () => {
+			const newEvent = eventsStore.create()
+
+			expect(newEvent).toBeInstanceOf(EventModel)
+			expect(eventsStore.data.length).toBe(1)
+			expect(eventsStore.data[0]).toEqual(newEvent)
+		})
+
+		// EventStore.create(data)
+		it('Should create a new record and store data when called with args', () => {
+			const mockEvent = {
+				title: "An Event",
+				date: new Date().toISOString()
+			}
+			const newEvent = eventsStore.create(mockEvent)
+
+			expect(newEvent).toBeInstanceOf(EventModel)
+			expect(newEvent.data).toEqual(mockEvent)
+			expect(eventsStore.data.length).toBe(1)
+			expect(eventsStore.data[0]).toEqual(newEvent)
+		})
+
 	})
 
-	it('Should not create a new recrod when calling new with data args', () => {
-		const mockEvent = {
-			title: "An Event",
-			date: new Date().toISOString()
-		}
-		const eventsStore = new EventsStore()
-		const event = eventsStore.new()
-		expect(event).toBeInstanceOf(EventModel)
-		expect(event).not.toHaveProperty('_key')
-	})
 })

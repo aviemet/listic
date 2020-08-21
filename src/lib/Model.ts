@@ -33,16 +33,11 @@ class Model implements IModel {
 	 * @param db Database instance
 	 * @param base_ref Node base location as string
 	 */
-	constructor(data?: { [key: string]: object }) {
+	constructor(data?: object) {
+		this._isNew = true
+
 		if(data) {
-			const [key, val] = Object.entries(data)[0]
-			this._key = key
-			this.set(val)
-		} else {
-			this._isNew = true
-			// Create a new record to retrieve a key, store the reference
-			this._ref = db.ref(`${this._base_ref}`).push()
-			this._key = this._ref.key
+			this.set(data)
 		}
 	}
 
@@ -50,7 +45,7 @@ class Model implements IModel {
 	 * Sets data of model locally without db sync
 	 * @param data Object of data to be saved to the database
 	 */
-	set(data) {
+	set(data: object) {
 		for(const [key, val] of Object.entries(data)) {
 			if(this.data[key]) {
 				this.data[key] = val

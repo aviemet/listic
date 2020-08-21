@@ -31,10 +31,16 @@ class Store {
 	set offset(val) { this._offset = val }
 
 	/**
-	 * Returns a data Model
+	 * Creates a new database record and returns a Model
 	 */
-	new(data?: { [key: string]: object }) {
-		const model = new this._model(data || null)
+	create(data?: object) {
+		// Create a new record to retrieve a key, store the reference
+		const ref = db.ref(`${this._base_ref}`).push()
+
+		const model = new this._model()
+		if(data) {
+			model.set(data)
+		}
 		this._records.set(model.data.key, model)
 		return model
 	}
@@ -79,7 +85,7 @@ class Store {
 }
 
 export interface IStore {
-	new: Function,
+	create: Function,
 	fetch: Function,
 }
 
