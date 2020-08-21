@@ -26,8 +26,6 @@ if(process.env.NODE_ENV === 'production') {
   firebase.analytics()
 }
 
-console.log({ fire })
-
 const db = fire.database()
 const auth = fire.auth()
 

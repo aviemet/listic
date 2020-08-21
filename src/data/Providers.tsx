@@ -11,7 +11,7 @@ import EventsStore from 'data/Events/EventsStore'
 type storeContextTuple = [IStore, React.Context<Partial<IStore>>]
 
 const createStoreContext = (model: typeof Model, path: string): storeContextTuple => {
-	const store = new Store(model, path)
+	const store = new Store()
 	const context = React.createContext<Partial<IStore>>(store)
 	return [store, context]
 }
@@ -39,9 +39,9 @@ export const useUsers = () => React.useContext(UsersStoreContext)
 /**
  * Events Store
  */
-const [eventsStore, EventsStoreContext] = createStoreContext(EventModel, 'events')
-// const eventsStore = new EventsStore()
-// const EventsStoreContext = React.createContext(eventsStore)
+// const [eventsStore, EventsStoreContext] = createStoreContext(EventModel, 'events')
+const eventsStore = new EventsStore()
+const EventsStoreContext = React.createContext(eventsStore)
 export const useEvents = () => React.useContext(EventsStoreContext)
 
 /**

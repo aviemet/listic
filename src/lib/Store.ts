@@ -11,6 +11,7 @@ import Model from 'lib/Model'
  * 	syncronizing local data to the database
  */
 class Store {
+	// Define these in subclasses
 	protected _model: typeof Model
 	protected _base_ref: string
 
@@ -28,11 +29,6 @@ class Store {
 	private _offset = 0
 	get offset() { return this._offset }
 	set offset(val) { this._offset = val }
-
-	constructor(model, ref) {
-		this._model = model
-		this._base_ref = ref
-	}
 
 	/**
 	 * Returns a data Model
