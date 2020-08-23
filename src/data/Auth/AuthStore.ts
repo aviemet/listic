@@ -1,7 +1,6 @@
 import { observable, action } from 'mobx'
 import * as data from 'lib/fire'
 
-console.log({ data })
 const auth = data.auth
 
 export default class AuthStore {

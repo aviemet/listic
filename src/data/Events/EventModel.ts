@@ -2,7 +2,6 @@ import Model from 'lib/Model'
 import { db } from 'lib/fire'
 
 class EventModel extends Model implements Partial<IEventData> {
-	_base_ref = 'events'
 
 	onCreate(data) {
 		db.ref('lists').push({
@@ -15,7 +14,7 @@ class EventModel extends Model implements Partial<IEventData> {
 
 }
 
-interface IEventData extends Model {
+export interface IEventData extends Model {
 	id: string,
 	title: string,
 	date: Date,

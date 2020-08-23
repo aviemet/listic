@@ -30,6 +30,15 @@ class Store {
 	get offset() { return this._offset }
 	set offset(val) { this._offset = val }
 
+	constructor(base_ref, model) {
+		this._base_ref = base_ref
+		this._model = model
+	}
+
+	newModel(key?: string, data?: object) {
+		return new this._model(this._base_ref, key, data)
+	}
+
 	/**
 	 * Creates a new database record and returns a Model
 	 */
@@ -37,27 +46,22 @@ class Store {
 		// Create a new record to retrieve a key, store the reference
 		const ref = db.ref(`${this._base_ref}`).push()
 
-		const model = new this._model()
-		if(data) {
-			model.set(data)
-		}
+		const model = this.newModel(ref.key, data || null)
 		this._records.set(model.data.key, model)
 		return model
 	}
 
-	// store.fetch() Fetch all records at ref, return array
+	build(key?: string, data?: object) {
+		return this.newModel(key, data)
+	}
+
+	// store.fetch() Fetch paginated records at ref
 	// store.fetch("{id}") Fetch a single record, return it
 	// store.fetch({search options}) Perform advanced find, return array
-	fetch(params?: string | object | Function, callback?: Function) {
-		// Super hacky
-		if(typeof params === "function") { 
-			callback = params 
-			params = undefined
-		}
 
+	fetch(params?: string | object, callback?: Function) {
 		if(!params || typeof params === "function") {
-			//@ts-ignore
-			return this._fetchPaginatedRecords(callback)
+			
 		} else if(typeof params === 'string') {
 			return this._findById(params, callback)
 		} else {
@@ -65,22 +69,24 @@ class Store {
 		}
 	}
 
-	private _fetchPaginatedRecords(callback?: Function) {
+	private _fetchPaginatedRecords(callback: Function) {
 		const ref = db.ref(`${this._base_ref}`).on('value', response => {
 			const events: [{[key: string]: object}] = response.val()
 
 			if(!events) return
 
 			for(const [key, val] of Object.entries(events)) {
-				this._records.set(key, new this._model({ [key]: val }))
+				this._records.set(key, this.newModel(key, val))
 			}
 
 			if(callback) callback(this.data)
 		})
 	}
 
-	private _findById(id: string, callback?: Function) {
-		return db.ref(`${this._base_ref}/${id}`)
+	private _findById(id: string, callback: Function) {
+		return db.ref(`${this._base_ref}/${id}`).on('value', snapshot => {
+			callback(snapshot.val())
+		})
 	}
 }
 
