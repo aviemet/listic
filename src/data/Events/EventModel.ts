@@ -1,14 +1,26 @@
 import Model from 'lib/Model'
-import { db } from 'lib/fire'
+import { db, auth } from 'lib/fire'
+import { extendObservable } from 'mobx'
 
 class EventModel extends Model implements Partial<IEventData> {
 
-	beforeCreate(data) {
-		db.ref('lists').push({
-			event: data.key,
-			title: `${data.title} List`
-		}).then(response => {
-			console.log({ response })
+	async beforeCreate() {
+		const acl = [{
+			user: auth.currentUser.uid,
+			role: "owner"
+		}]
+
+		const list = await db.ref('lists').push({
+			event: this.key,
+			title: `${this.data.title} List`,
+			acl
+		})
+		extendObservable(this.data, {
+			lists: [{
+				guestCount: 0,
+				key: list.key
+			}],
+			acl
 		})
 	}
 

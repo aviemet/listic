@@ -20,13 +20,16 @@ const EditEvent = () => {
 
 	const [ loading, setLoading ] = React.useState(true)
 	const [ event, setEvent ] = React.useState<Partial<IEventData>>({})
+	const [ lists, setLists ] = React.useState([])
 	
 	React.useEffect(() => {
-		EventsStore.fetch(eventId, event => {
-			setEvent(event)
+		EventsStore.fetch(eventId, response => {
+			setEvent(response)
 			setLoading(false)
 
-			console.log({ event })
+			AppStore.title = <TitleEditInput event={ response } onSubmit={ () => console.log('submit') } />
+
+			console.log({ response })
 		})
 	}, [])
 
@@ -35,7 +38,7 @@ const EditEvent = () => {
 	}
 
 	return (
-		<ListTabs lists={ event.data.lists || [] } />
+		<ListTabs lists={ lists } />
 	)
 }
 

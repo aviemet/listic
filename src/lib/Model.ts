@@ -32,10 +32,10 @@ class Model implements IModel {
 		return this._key
 	}
 	
-	protected beforeCreate(data: object){}
-	protected afterCreate(data: object){}
-	protected beforeSave(data: object){}
-	protected afterSave(data: object){}
+	protected beforeCreate(){}
+	protected afterCreate(){}
+	protected beforeSave(){}
+	protected afterSave(){}
 
 	/**
 	 * Initialize database references and create a new record for this model
@@ -67,12 +67,12 @@ class Model implements IModel {
 		}
 	}
 
-	save(data?: object, errorCallback?: Function) {
+	async save(data?: object, errorCallback?: Function) {
 		if(data) this.set(data)
 
 		// Lifecycle before hooks
-		if(this._isNew) this.beforeCreate(this.data)
-		this.beforeSave(this.data)
+		if(this._isNew) await this.beforeCreate()
+		await this.beforeSave()
 
 		// Perform save action
 		return this._ref.update(this.data, function(error) {
@@ -81,8 +81,8 @@ class Model implements IModel {
 			}
 		}).then(() => {
 			// Lifecycle after hooks
-			this.afterSave(this.data)
-			if(this._isNew) this.afterCreate(this.data)
+			this.afterSave()
+			if(this._isNew) this.afterCreate()
 			this._isNew = false
 			
 			errorCallback(false)

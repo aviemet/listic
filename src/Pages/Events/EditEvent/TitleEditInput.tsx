@@ -13,11 +13,11 @@ interface TitleEditInputProps {
 const TitleEditInput = observer(({ event, onSubmit }: TitleEditInputProps) => {
 	const AppStore = useApp()
 
-	if(!event.title) {
+	if(!event.data.title) {
 		return <AppBarTitle text={ AppStore.defaultTitle } />
 	}
 	return (
-		<Input value="Event Title" onSubmit={ () => onSubmit() } />
+		<Input value={ event.data.title } onSubmit={ () => onSubmit() } />
 	)
 })
 

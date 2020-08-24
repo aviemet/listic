@@ -1,7 +1,5 @@
 import { observable, action } from 'mobx'
-import * as data from 'lib/fire'
-
-const auth = data.auth
+import { auth } from 'lib/fire'
 
 export default class AuthStore {
 	@observable loading = true
