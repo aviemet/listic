@@ -35,8 +35,10 @@ class Store {
 		this._model = model
 	}
 
-	newModel(key?: string, data?: object) {
-		return new this._model(this._base_ref, key, data)
+	newModel(key: string, data?: object) {
+		const model = new this._model(this._base_ref, key, data)
+		this._records.set(key, model)
+		return model
 	}
 
 	/**
@@ -47,11 +49,11 @@ class Store {
 		const ref = db.ref(`${this._base_ref}`).push()
 
 		const model = this.newModel(ref.key, data || null)
-		this._records.set(model.data.key, model)
+		model._isNew = true
 		return model
 	}
 
-	build(key?: string, data?: object) {
+	build(key: string, data?: object) {
 		return this.newModel(key, data)
 	}
 
@@ -60,10 +62,8 @@ class Store {
 	// store.fetch({search options}) Perform advanced find, return array
 
 	fetch(params?: string | object, callback?: Function) {
-		if(!params || typeof params === "function") {
-			
-		} else if(typeof params === 'string') {
-			return this._findById(params, callback)
+		if(typeof params === 'string') {
+			return this._findByKey(params, callback)
 		} else {
 			// Advanced find not yet implemented
 		}
@@ -71,6 +71,7 @@ class Store {
 
 	private _fetchPaginatedRecords(callback: Function) {
 		const ref = db.ref(`${this._base_ref}`).on('value', response => {
+			this._storeFetchedModels(response)
 			const events: [{[key: string]: object}] = response.val()
 
 			if(!events) return
@@ -83,10 +84,15 @@ class Store {
 		})
 	}
 
-	private _findById(id: string, callback: Function) {
-		return db.ref(`${this._base_ref}/${id}`).on('value', snapshot => {
-			callback(snapshot.val())
+	private _findByKey(key: string, callback: Function) {
+		db.ref(`${this._base_ref}/${key}`).on('value', snapshot => {
+			const model = this.newModel(key, snapshot.val())
+			callback(model)
 		})
+	}
+
+	private _storeFetchedModels(data) {
+		
 	}
 }
 

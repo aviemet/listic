@@ -8,7 +8,7 @@ import { db } from 'lib/fire'
  * 
  * Will there ever be a situation where a model wouldn't know its key?
  * 
- * Store.creat() first generates a key, then creates a model.
+ * Store.create() first generates a key, then creates a model.
  * 
  * There is the possibility of a model not having any data, but never not having a key
  * 
@@ -19,17 +19,13 @@ import { db } from 'lib/fire'
 // db.set(data) overwrites data including child nodes
 // db.update(data) updates only the values provided, can update multiple nodes at once
 
-interface IModelData {
-	key: string
-}
-
 class Model implements IModel {
 	_base_ref!: string
 	_ref: firebase.database.Reference
 	// Flag to indicate first save should trigger onCreate and afterCreate hooks
-	private _isNew = false
+	_isNew = false
 	
-	@observable data: Partial<IModelData> = {}
+	@observable data: any = {}
 	
 	protected _key: string
 	get key(){
@@ -47,13 +43,10 @@ class Model implements IModel {
 	 * @param db Database instance
 	 * @param base_ref Node base location as string
 	 */
-	// constructor(data?: object) {
 	constructor(base_ref, key, data?) {
 		this._base_ref = base_ref
 		this._key = key
 		this._ref = db.ref(`${this._base_ref}/${this._key}`)
-		
-		this._isNew = true
 
 		if(data) {
 			this.set(data)

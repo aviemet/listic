@@ -3,7 +3,7 @@ import { db } from 'lib/fire'
 
 class EventModel extends Model implements Partial<IEventData> {
 
-	onCreate(data) {
+	beforeCreate(data) {
 		db.ref('lists').push({
 			event: data.key,
 			title: `${data.title} List`

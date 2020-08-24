@@ -4,14 +4,12 @@ import Model from 'lib/Model'
 import { v4 as uuid } from 'uuid'
 import { db } from 'lib/fire'
 
-
-
 describe('EventModel', () => {
 	const key = uuid()
 	const eventsStore = new Store('events', EventModel)
 
 	const mockEvent = {
-		title: "An Event",
+		title: "Testing EventModel",
 		date: new Date().toISOString()
 	}
 

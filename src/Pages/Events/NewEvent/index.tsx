@@ -37,7 +37,7 @@ const NewEvent = () => {
 
 	const onSubmit = data => {
 		const event = EventsStore.create()
-		console.log({ event })
+		
 		event.save(data, error => {
 			if(error) {
 				console.error(error)

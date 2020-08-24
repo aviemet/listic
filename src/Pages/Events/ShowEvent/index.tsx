@@ -19,7 +19,7 @@ const ShowEvent = () => {
 	})
 	
 	React.useEffect(() => {
-		const event = EventsStore.fetch(eventId, event => {
+		EventsStore.fetch(eventId, event => {
 			setEvent(event)
 			setLoading(false)
 		})

@@ -6,6 +6,7 @@ import EventForm from './EventForm'
 import Container from '@material-ui/core/Container'
 import TitleEditInput from './TitleEditInput'
 import ListTabs from '../ListsTabs'
+import { IEventData } from 'data/Events/EventModel'
 
 interface IEventsList {
 	event: object,
@@ -18,10 +19,15 @@ const EditEvent = () => {
 	const EventsStore = useEvents()
 
 	const [ loading, setLoading ] = React.useState(true)
-	const eventRef = React.useRef<IEventsList>()
-	// const [ event, setEvent ] = React.useState<Partial<IEventsStore>>({})
+	const [ event, setEvent ] = React.useState<Partial<IEventData>>({})
 	
 	React.useEffect(() => {
+		EventsStore.fetch(eventId, event => {
+			setEvent(event)
+			setLoading(false)
+
+			console.log({ event })
+		})
 	}, [])
 
 	if(loading) {
@@ -29,7 +35,7 @@ const EditEvent = () => {
 	}
 
 	return (
-		<ListTabs lists={ eventRef.current.lists } />
+		<ListTabs lists={ event.data.lists || [] } />
 	)
 }
 
