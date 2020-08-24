@@ -10,18 +10,12 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
-    "@apollo/react-hoc": "^4.0.0",
-    "@apollo/react-hooks": "^4.0.0",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
-    "apollo-boost": "^0.4.9",
-    "apollo-link-context": "^1.0.20",
     "customize-cra": "^1.0.0",
     "firebase": "^7.16.0",
-    "firebaseui": "^4.5.2",
-    "graphql": "^15.3.0",
     "lodash": "^4.17.19",
-    "mobx": "^5.15.4",
+    "mobx": "^5.15.6",
     "mobx-react-lite": "^2.0.7",
     "moment": "^2.27.0",
     "react": "^16.13.1",
@@ -31,10 +25,9 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
-    "rethinkdb": "^2.4.2",
-    "rr-named-routes": "^1.0.0",
+    "rr-named-routes": "^1.0.1",
     "styled-components": "^5.1.1",
-    "typescript": "^3.9.6",
+    "typescript": "^4.0.2",
     "uuid": "^8.3.0"
   },
   "devDependencies": {
