@@ -7,9 +7,10 @@ import { Container } from '@material-ui/core'
 import styled from 'styled-components'
 import Filter from './Filter'
 import { IEventData } from 'data/Events/EventModel'
+import { observer } from 'mobx-react-lite'
 
-const ShowEvent = () => {
-	const { id: eventId } = useParams()
+const ShowEvent = observer(() => {
+	const { id: eventId } = useParams<{ id: string }>()
 	const EventsStore = useEvents()
 	const AppStore = useApp()
 
@@ -19,11 +20,13 @@ const ShowEvent = () => {
 	})
 	
 	React.useEffect(() => {
-		EventsStore.fetch(eventId, event => {
+		EventsStore.fetch(eventId).then(event => {
 			setEvent(event)
 			setLoading(false)
 		})
 	}, [])
+
+	console.log({ event })
 
 	React.useEffect(() => {
 		if(event.title) {
@@ -47,7 +50,7 @@ const ShowEvent = () => {
 
 		</FullWidth>
 	)
-}
+})
 
 const FullWidth = styled.div`
 	width: 100%;

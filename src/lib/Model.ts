@@ -1,35 +1,19 @@
-import { extendObservable, observable, onBecomeObserved } from "mobx"
+import { extendObservable, observable, onBecomeObserved } from 'mobx'
 import { db } from 'lib/fire'
-
-/**
- * A model should know:
- * its own data
- * how to save its own data
- * 
- * Will there ever be a situation where a model wouldn't know its key?
- * 
- * Store.create() first generates a key, then creates a model.
- * 
- * There is the possibility of a model not having any data, but never not having a key
- * 
- * Store will have the ref and listeners if fetch from list.
- */
-
-// db.push(data) create node and returns key
-// db.set(data) overwrites data including child nodes
-// db.update(data) updates only the values provided, can update multiple nodes at once
+import firebase from 'firebase'
 
 class Model implements IModel {
-	_base_ref!: string
-	_ref: firebase.database.Reference
-	// Flag to indicate first save should trigger onCreate and afterCreate hooks
-	_isNew = false
+	// Due to an oddity in the member initialization order for classes in javascript, _collectionId must be a method rather than a member variable. This needs to be overridden to return the string value of the collection name when inhertited
+	protected get _collectionId() { return '' }
+
+	protected _collection: firebase.firestore.CollectionReference
+	protected _doc: firebase.firestore.DocumentReference
 	
 	@observable data: any = {}
+	@observable saving = false
 	
-	protected _key: string
-	get key(){
-		return this._key
+	get id(){
+		return this._doc ? this._doc.id : null
 	}
 	
 	protected beforeCreate(){}
@@ -37,18 +21,16 @@ class Model implements IModel {
 	protected beforeSave(){}
 	protected afterSave(){}
 
-	/**
-	 * Initialize database references and create a new record for this model
-	 * Save the database reference and record key on the instance
-	 * @param db Database instance
-	 * @param base_ref Node base location as string
-	 */
-	constructor(base_ref, key, data?) {
-		this._base_ref = base_ref
-		this._key = key
-		this._ref = db.ref(`${this._base_ref}/${this._key}`)
-
-		if(data) {
+	constructor(data?, isDoc = false) {
+		this._collection = db.collection(this._collectionId)
+		if(!data) return
+		
+		if(isDoc) {
+			this._doc = this._collection.doc(data)
+			this._doc.get().then(snapshot => {
+				this.set(snapshot.data())
+			})
+		} else {
 			this.set(data)
 		}
 	}
@@ -67,26 +49,20 @@ class Model implements IModel {
 		}
 	}
 
-	async save(data?: object, errorCallback?: Function) {
-		if(data) this.set(data)
-
-		// Lifecycle before hooks
-		if(this._isNew) await this.beforeCreate()
-		await this.beforeSave()
-
-		// Perform save action
-		return this._ref.update(this.data, function(error) {
-			if(error) {
-				errorCallback({ error })
-			}
-		}).then(() => {
-			// Lifecycle after hooks
-			this.afterSave()
-			if(this._isNew) this.afterCreate()
-			this._isNew = false
-			
-			errorCallback(false)
-		})
+	save() {
+		this.saving = true
+		let promise: Promise<void>
+		if(this._doc) {
+			promise = this._doc.update(this.data)
+		} else {
+			this._doc = this._collection.doc()
+			promise = this._doc.set(this.data)
+		}
+		return promise
+			.then(() => this.saving = false)
+			.catch(error => {
+				console.error({ error })
+			})
 	}
 }
 

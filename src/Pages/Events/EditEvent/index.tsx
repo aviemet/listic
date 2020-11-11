@@ -7,14 +7,15 @@ import Container from '@material-ui/core/Container'
 import TitleEditInput from './TitleEditInput'
 import ListTabs from '../ListsTabs'
 import { IEventData } from 'data/Events/EventModel'
+import { observer } from 'mobx-react-lite'
 
 interface IEventsList {
 	event: object,
 	lists: object[]
 }
 
-const EditEvent = () => {
-	const { id: eventId } = useParams()
+const EditEvent = observer(() => {
+	const { id: eventId } = useParams<{ id: string }>()
 	const AppStore = useApp()
 	const EventsStore = useEvents()
 
@@ -23,13 +24,13 @@ const EditEvent = () => {
 	const [ lists, setLists ] = React.useState([])
 	
 	React.useEffect(() => {
-		EventsStore.fetch(eventId, response => {
+		EventsStore.fetch(eventId).then(response => {
 			setEvent(response)
 			setLoading(false)
 
 			AppStore.title = <TitleEditInput event={ response } onSubmit={ () => console.log('submit') } />
 
-			console.log({ response })
+			console.log({ title: response.data.title })
 		})
 	}, [])
 
@@ -40,6 +41,6 @@ const EditEvent = () => {
 	return (
 		<ListTabs lists={ lists } />
 	)
-}
+})
 
 export default EditEvent

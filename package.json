@@ -4,16 +4,17 @@
   "private": true,
   "scripts": {
     "start": "react-app-rewired start",
+    "dev": "npm-run-all --parallel firebase:emulator start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test --modulePaths=src",
-    "firebase:emulator": "firebase emulators:start --only database",
+    "firebase:emulator": "firebase emulators:start --only firestore --import=./emulator-data --export-on-exit",
     "eject": "react-scripts eject"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "customize-cra": "^1.0.0",
-    "firebase": "^7.16.0",
+    "firebase": "^8.0.1",
     "lodash": "^4.17.19",
     "mobx": "^5.15.6",
     "mobx-react-lite": "^2.0.7",
@@ -27,10 +28,11 @@
     "react-scripts": "3.4.1",
     "rr-named-routes": "^1.0.1",
     "styled-components": "^5.1.1",
-    "typescript": "^4.0.2",
     "uuid": "^8.3.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.12.3",
+    "@babel/eslint-parser": "^7.12.1",
     "@babel/plugin-proposal-decorators": "^7.10.5",
     "@testing-library/jest-dom": "^5.11.3",
     "@testing-library/react": "^9.3.2",
@@ -39,7 +41,14 @@
     "@types/node": "^14.0.23",
     "@types/react": "^16.9.43",
     "@types/react-dom": "^16.9.8",
-    "@types/react-router-dom": "^5.1.5"
+    "@types/react-router-dom": "^5.1.5",
+    "@typescript-eslint/eslint-plugin": "^4.7.0",
+    "@typescript-eslint/parser": "^4.7.0",
+    "eslint": "^7.13.0",
+    "eslint-plugin-jest": "^24.1.0",
+    "eslint-plugin-react": "^7.21.5",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^4.0.5"
   },
   "eslintConfig": {
     "extends": "react-app"

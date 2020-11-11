@@ -1,8 +1,6 @@
 import { db } from 'lib/fire'
 import Model from 'lib/Model'
-
-// db.on('value', ...) Creates a responsive connection to the data
-// db.once('value', ...) Fetches the data once without responsiveness
+import firebase from 'firebase'
 
 /**
  * Extensible class responsible for maintaining a list of models
@@ -12,8 +10,8 @@ import Model from 'lib/Model'
  */
 class Store {
 	// Define these in subclasses
+	protected _collectionId: string
 	protected _model: typeof Model
-	protected _base_ref: string
 
 	protected _records = new Map<string, Model>()
 	get data() {
@@ -30,75 +28,77 @@ class Store {
 	get offset() { return this._offset }
 	set offset(val) { this._offset = val }
 
-	constructor(base_ref, model) {
-		this._base_ref = base_ref
+	constructor(collectionId, model) {
+		this._collectionId = collectionId
 		this._model = model
-	}
-
-	newModel(key: string, data?: object) {
-		const model = new this._model(this._base_ref, key, data)
-		this._records.set(key, model)
-		return model
 	}
 
 	/**
 	 * Creates a new database record and returns a Model
+	 * @param data Object of data to store
 	 */
-	create(data?: object) {
-		// Create a new record to retrieve a key, store the reference
-		const ref = db.ref(`${this._base_ref}`).push()
-
-		const model = this.newModel(ref.key, data || null)
-		model._isNew = true
+	async create(data?: object) {
+		const model = this._newModel({ data })
+		await model.save()
+		this._records.set(model.id, model)
 		return model
 	}
 
-	build(key: string, data?: object) {
-		return this.newModel(key, data)
+	/**
+	 * Builds a new model without saving to database
+	 * @param data Object of data to store
+	 */
+	build(data: object) {
+		const model = this._newModel({ data })
+		return model
 	}
 
-	// store.fetch() Fetch paginated records at ref
-	// store.fetch("{id}") Fetch a single record, return it
-	// store.fetch({search options}) Perform advanced find, return array
+	/**
+	 * Fetches a single record from the database and returns a model
+	 * @param id Key for data record
+	 */
+	async fetch(id: string) {
+		const model = this._newModel({ id })
+		return model
+	}
 
-	fetch(params?: string | object, callback?: Function) {
-		if(typeof params === 'string') {
-			return this._findByKey(params, callback)
+	_newModel({ data, id }: { data?: object, id?: string }) {
+		let model
+		if(data) {
+			model = new this._model(data)
+		} else if(id) {
+			model = new this._model(id, true)
+			this._records.set(id, model)
 		} else {
-			// Advanced find not yet implemented
+			model = new this._model()
 		}
+		return model
 	}
 
 	private _fetchPaginatedRecords(callback: Function) {
-		const ref = db.ref(`${this._base_ref}`).on('value', response => {
+		/*const ref = db.ref(`${this._base_ref}`).on('value', response => {
 			this._storeFetchedModels(response)
 			const events: [{[key: string]: object}] = response.val()
 
 			if(!events) return
 
 			for(const [key, val] of Object.entries(events)) {
-				this._records.set(key, this.newModel(key, val))
+				this._records.set(key, this._newModel(key, val))
 			}
 
 			if(callback) callback(this.data)
-		})
-	}
-
-	private _findByKey(key: string, callback: Function) {
-		db.ref(`${this._base_ref}/${key}`).on('value', snapshot => {
-			const model = this.newModel(key, snapshot.val())
-			callback(model)
-		})
+		})*/
 	}
 
 	private _storeFetchedModels(data) {
 		
 	}
 }
-
+/*
 export interface IStore {
 	create: Function,
+	build: Function,
 	fetch: Function,
-}
+}*/
 
 export default Store

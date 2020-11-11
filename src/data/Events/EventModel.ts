@@ -3,7 +3,14 @@ import { db, auth } from 'lib/fire'
 import { extendObservable } from 'mobx'
 
 class EventModel extends Model implements Partial<IEventData> {
+	get _collectionId() { return 'events' }
 
+	// constructor(...args){
+	// 	super(...args)
+
+	// 	this._collection = db.collection('events')
+	// }
+/*
 	async beforeCreate() {
 		const acl = [{
 			user: auth.currentUser.uid,
@@ -23,7 +30,7 @@ class EventModel extends Model implements Partial<IEventData> {
 			acl
 		})
 	}
-
+*/
 }
 
 export interface IEventData extends Model {

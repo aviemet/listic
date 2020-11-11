@@ -36,15 +36,10 @@ const NewEvent = () => {
 	const EventsStore = useEvents()
 
 	const onSubmit = data => {
-		const event = EventsStore.create()
+		const event = EventsStore.build(data)
 		
-		event.save(data, error => {
-			if(error) {
-				console.error(error)
-			} else {
-				console.log({ data: event.data })
-				history.push(routes.events.show.edit({ id: event.key }))
-			}
+		event.save().then(() => {
+			history.push(routes.events.show.edit({ id: event.id }))
 		})
 	}
 	

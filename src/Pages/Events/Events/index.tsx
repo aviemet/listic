@@ -34,10 +34,10 @@ const Events = () => {
 	const [ events, setEvents ] = React.useState({})
 
 	React.useEffect(() => {
-		EventsStore.fetch(response => {
+		/*EventsStore.fetch(response => {
 			setEvents(response)
 			setLoading(false)
-		})
+		})*/
 	}, [])
 	
 	return (

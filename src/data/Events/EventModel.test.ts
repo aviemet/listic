@@ -1,6 +1,5 @@
 import Store from 'lib/Store'
 import EventModel from './EventModel'
-import Model from 'lib/Model'
 import { v4 as uuid } from 'uuid'
 import { db } from 'lib/fire'
 
@@ -13,53 +12,41 @@ describe('EventModel', () => {
 		date: new Date().toISOString()
 	}
 
-	it('Instantiates with correct values', () => {
-		const event = eventsStore.create()
-
-		expect(event).toBeInstanceOf(Model)
-		expect(event).toBeInstanceOf(EventModel)
-		expect(event._base_ref).toEqual('events')
-	})
-
-	describe('new', () => {
-		it('Should store the key when called with just a key', () => {
-			const event = eventsStore.build(key)
-
-			expect(typeof event.key).toBe('string')
-			expect(event.key.length).toBeGreaterThan(0)
-			expect(event.data).toEqual({})
+	describe('Instantiating new Model', () => {
+		it('Returns an empty model with no db connection if passed no params', () => {
+			const model = new EventModel()
+			expect(model).toBeInstanceOf(EventModel)
 		})
 
-		it('Should store data when called with key and data', () => {
-			const event = eventsStore.build(key, mockEvent)
-
-			expect(typeof event.key).toBe('string')
-			expect(event.key.length).toBeGreaterThan(0)
-			expect(event.data).toEqual(mockEvent)
+		it('Stores data passed to it without creating db ref if passed data', () => {
+			const model = new EventModel(mockEvent)
+			expect(model).toBeInstanceOf(EventModel)
+			expect(model.data).toEqual(mockEvent)
 		})
 	})
 
 	describe('set', () => {
-		const event = eventsStore.create()
+		const model = new EventModel(mockEvent)
 
 		it('Should change data on the model', () => {
-			event.set(mockEvent)
-
-			expect(event.data).toEqual(mockEvent)
+			const differentTitle = "A different title"
+			model.set({ title: differentTitle })
+			expect(model.data.title).toEqual(differentTitle)
 		})
-
 	})
 
 	describe('save', () => {
-		const event = eventsStore.create()
+		const model = new EventModel(mockEvent)
 
-		it('Should persiste values to the database', () => {
-			event.set(mockEvent)
-			event.save()
-
-			db.ref(`events/${key}`).once('value', snapshot => {
-				expect(snapshot.val()).toEqual(mockEvent)
+		it('Should persist values to the database', done => {
+			model.save().then(() => {
+				expect(2).toEqual(2)
+				db.collection('events').doc(model.id).get().then(snapshot => {
+					expect(snapshot.data()).toEqual(mockEvent)
+					done()
+				})
 			})
 		})
 	})
+
 })

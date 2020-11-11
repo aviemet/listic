@@ -4,9 +4,9 @@ A real time guest list app for non-persistent guest data.
 
 Built with React and Firebase
 
-### DB Structure
+## DB Structure
 
-```
+```javascript
 roles: enum('admin', 'owner', 'editor', 'user')
 
 events: {
@@ -41,7 +41,7 @@ lists: {
 				arrived: datetime,
 				tags: [string]
 				guests: [
-					{ 
+					{
 						firstName: string,
 						lastName: string,
 						arrived: datetime
@@ -59,7 +59,8 @@ lists: {
 }
 ```
 
-### Notes
+## Notes
+
 Keep this in mind when theming MUI with styled-components
 https://material-ui.com/guides/interoperability/#styled-components
 
@@ -94,7 +95,7 @@ export default function StyledComponentsDeep() {
 }
 ```
 
-### Setup
+## Setup
 
 After running `yarn`, install the firebase cli tools:
 `npm i -g firebase-tools`
